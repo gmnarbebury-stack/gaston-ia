@@ -97,76 +97,68 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </style>
 </head>
 <body>
-
 <div id="topbar">
   <div class="left">
     <div class="logo">ELEVATO GROUP</div>
-    <div class="title">Gastón AI ⚡</div>
+    <div class="title">Gaston AI</div>
   </div>
   <div class="top-btns">
     <select id="mode-selector" onchange="setMode(this.value)">
-      <option value="general">💬 General</option>
-      <option value="real_estate">🏢 Real Estate</option>
-      <option value="research">🔍 Research</option>
-      <option value="docs">📄 Documentos</option>
-      <option value="tasks">✅ Tareas</option>
-      <option value="strategy">🎯 Estrategia</option>
+      <option value="general">General</option>
+      <option value="real_estate">Real Estate</option>
+      <option value="research">Research</option>
+      <option value="docs">Documentos</option>
+      <option value="tasks">Tareas</option>
+      <option value="strategy">Estrategia</option>
     </select>
-    <button id="gmail-btn" onclick="toggleGmail()">📧 Gmail</button>
-    <button id="mem-btn" onclick="openMem()">🧠 Memoria</button>
+    <button id="gmail-btn" onclick="toggleGmail()">Gmail</button>
+    <button id="mem-btn" onclick="openMem()">Memoria</button>
   </div>
 </div>
-
 <div id="wrap" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
   <div id="welcome">
-    <div class="ico">⚡</div>
-    <h2>Hola Gastón</h2>
-    <p>Tu asistente personal. Recuerda todo, maneja tu Gmail y Calendar.</p>
+    <div class="ico">&#9889;</div>
+    <h2>Hola Gaston</h2>
+    <p>Tu asistente personal. Gmail, Calendar y busqueda web en tiempo real.</p>
     <div class="sug-grid">
-      <div class="sug" onclick="go('Mostrá mis últimos emails sin leer y resumime lo más importante')">
-        <div class="si">📧</div><div class="st">Emails sin leer</div><div class="ss">Resumen de lo importante</div>
+      <div class="sug" onclick="go('Mostra mis ultimos emails sin leer y resumime lo mas importante')">
+        <div class="si">&#128231;</div><div class="st">Emails sin leer</div><div class="ss">Resumen de lo importante</div>
       </div>
-      <div class="sug" onclick="go('Mostrá mis reuniones y eventos de los próximos 7 días')">
-        <div class="si">📅</div><div class="st">Próximos eventos</div><div class="ss">Agenda de la semana</div>
+      <div class="sug" onclick="go('Mostra mis reuniones y eventos de los proximos 7 dias')">
+        <div class="si">&#128197;</div><div class="st">Proximos eventos</div><div class="ss">Agenda de la semana</div>
       </div>
-      <div class="sug" onclick="go('Redactá un email para presentar Elevato Group a un inversor institucional')">
-        <div class="si">✉️</div><div class="st">Email inversor</div><div class="ss">Pitch profesional</div>
+      <div class="sug" onclick="go('Cual es la cotizacion del dolar hoy en Argentina?')">
+        <div class="si">&#128269;</div><div class="st">Buscar en la web</div><div class="ss">Info actualizada al momento</div>
       </div>
-      <div class="sug" onclick="go('¿Qué debería priorizar esta semana para avanzar con Mote y Elevato?')">
-        <div class="si">🎯</div><div class="st">Prioridades hoy</div><div class="ss">Qué hacer esta semana</div>
+      <div class="sug" onclick="go('Que deberia priorizar esta semana para avanzar con Mote y Elevato?')">
+        <div class="si">&#127919;</div><div class="st">Prioridades hoy</div><div class="ss">Que hacer esta semana</div>
       </div>
     </div>
   </div>
   <div id="messages" style="display:none;"></div>
 </div>
-
 <div id="quick"></div>
-
 <div id="inputarea">
   <div id="inputrow">
-    <textarea id="inp" placeholder="Escribí tu consulta..." rows="1"
-      onkeydown="handleKey(event)" oninput="resize(this)"></textarea>
+    <textarea id="inp" placeholder="Escribi tu consulta..." rows="1" onkeydown="handleKey(event)" oninput="resize(this)"></textarea>
     <button id="sendbtn" onclick="send()">
       <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
     </button>
   </div>
 </div>
-
 <div id="mem-panel" onclick="closeMem(event)">
   <div id="mem-box">
     <div id="mem-header">
-      <h3>🧠 Memoria de Gastón</h3>
-      <button id="mem-close" onclick="closeMem()">×</button>
+      <h3>Memoria de Gaston</h3>
+      <button id="mem-close" onclick="closeMem()">&times;</button>
     </div>
     <div id="mem-body">
       <div>
-        <label>Lo que el agente recuerda — guardado en la nube</label>
+        <label>Lo que el agente recuerda</label>
         <textarea id="mem-text" placeholder="Cargando memoria..."></textarea>
       </div>
       <div class="mem-hint">
-        ✅ Guardado en la nube — funciona desde cualquier dispositivo.<br><br>
-        🤖 Se actualiza automáticamente al final de cada conversación.<br><br>
-        ✏️ También podés escribir o pegar info directamente acá.
+        Guardado en la nube. Se actualiza automaticamente al final de cada conversacion.
       </div>
     </div>
     <div id="mem-footer">
@@ -175,136 +167,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-const BASE_SYSTEM = `Sos el asistente estratégico, operativo y financiero de alto nivel de Gastón Narbeury.
+const BASE_SYSTEM = "Sos el asistente estrategico, operativo y financiero de alto nivel de Gaston Narbeury.\n\nPERFIL: Emprendedor argentino, operador y estratega. Directo, exigente, practico. Alto nivel, no explicar lo basico. Ir al grano, no repetir, no suavizar, entregar soluciones listas.\n\nEMPRESAS:\n1. MOTE GREEN MARKET: retail saludable (frutas, verduras, dietetica). E-commerce + delivery + pick-up. 2 turnos, 16 pedidos/turno, 1 camioneta. Problemas: cuello de botella en armado, retrasos segundo turno, falta sistema de stock.\n2. ELEVATOGROUP: consultora + desarrollo inmobiliario. Detecta oportunidades, analiza normativa, disena proyectos, consigue operadores, estructura contratos, captura valor. Objetivo: pasar de intermediario a equity propio.\n\nPROYECTOS ACTIVOS:\n- PedidosYa/Delivery Hero: dark store, contrato cerrado, replicar modelo\n- Strip Mall NQN: R22, 4200m2, ON CITY (1080m2) + MQ BAZAR (1980m2), inicio obra Junio 2026\n- Zona 135-1 NQN: 80450m2, La Anonima anchor, desarrollo mixto comercial + residencial\n- Funes SF: corredor RP-34S, retail/strip center, analisis y posicionamiento\n- Pilar/Escobar: retail + logistica, zonificacion IMIXC, scouting\n- San Nicolas: lote esquina ~1025m2, reserva/negociacion\n- Rosario Av. San Martin 5263: compra + locacion, Leonardo Tenaglia\n\nCONTACTOS: Leonardo Tenaglia (broker), Nacho/Ignacio (socio), Ezequiel (arquitecto), Alan (dev web), Ludmila (operacion), Lucas (verduleria). Corporativos: PedidosYa, Chango Mas, La Anonima, Toribio Achával.\n\nFORMA DE TRABAJO: Excel intensivo, itera rapido, todo en numeros. Siempre: CAPEX, OPEX, ROI, NPV, IRR, Payback, inflacion vs USD. No sabe programar.\n\nOBJETIVO: Construir un sistema que pase de generar ingresos por operacion a generar riqueza por activos.\n\nINTEGRACIONES: Gmail activo, Calendar activo, busqueda web en tiempo real activa.\n\nResponde siempre: directo al punto, soluciones accionables, numeros concretos, como socio estrategico senior. Espanol argentino.";
 
-PERFIL: Emprendedor argentino, operador y estratega. Directo, exigente, práctico. Alto nivel — no explicar lo básico. Ir al grano, no repetir, no suavizar, entregar soluciones listas.
-
-EMPRESAS:
-1. MOTE GREEN MARKET: retail saludable (frutas, verduras, dietética). E-commerce + delivery + pick-up. 2 turnos, 16 pedidos/turno, 1 camioneta. Problemas: cuello de botella en armado, retrasos segundo turno, falta sistema de stock.
-2. ELEVATOGROUP: consultora + desarrollo inmobiliario. Detecta oportunidades, analiza normativa, diseña proyectos, consigue operadores, estructura contratos, captura valor. Objetivo: pasar de intermediario a equity propio.
-
-PROYECTOS ACTIVOS:
-- PedidosYa/Delivery Hero: dark store, contrato cerrado, replicar modelo
-- Strip Mall NQN: R22, 4200m2, ON CITY (1080m2) + MQ BAZAR (1980m2), inicio obra Junio 2026
-- Zona 135-1 NQN: 80450m2, La Anónima anchor, desarrollo mixto comercial + residencial
-- Funes SF: corredor RP-34S, retail/strip center, análisis y posicionamiento
-- Pilar/Escobar: retail + logística, zonificación IMIXC, scouting
-- San Nicolás: lote esquina ~1025m2, reserva/negociación
-- Rosario Av. San Martín 5263: compra + locación, Leonardo Tenaglia
-
-CONTACTOS: Leonardo Tenaglia (broker), Nacho/Ignacio (socio), Ezequiel (arquitecto), Alan (dev web), Ludmila (operación), Lucas (verdulería). Corporativos: PedidosYa, Chango Más, La Anónima, Toribio Achával.
-
-FORMA DE TRABAJO: Excel intensivo, itera rápido, todo en números. Siempre: CAPEX, OPEX, ROI, NPV, IRR, Payback, inflación vs USD. No sabe programar.
-
-OBJETIVO: "Construir un sistema que pase de generar ingresos por operación a generar riqueza por activos."
-
-INTEGRACIONES DISPONIBLES:
-- GMAIL: Cuando pida emails usás fetchEmails(query). Cuando pida mandar un email usás sendEmail(). Siempre confirmás antes de mandar.
-- CALENDAR: Cuando pida ver agenda/reuniones/eventos usás fetchCalendar(days). Cuando pida crear un evento usás createCalendarEvent(). Confirmás antes de crear.
-
-Respondé siempre: directo al punto, soluciones accionables, números concretos, como socio estratégico senior. Español argentino.`;
-
-const EXTRACT_PROMPT = `Analizá esta conversación y extraé SOLO la información nueva y relevante que Gastón debería recordar: decisiones tomadas, contactos nuevos, datos de proyectos, novedades, compromisos, problemas. Lista de puntos cortos. Si no hay nada nuevo relevante, respondé exactamente: NADA\n\nConversación:\n`;
+const EXTRACT_PROMPT = "Analiza esta conversacion y extraé SOLO la informacion nueva y relevante que Gaston deberia recordar: decisiones tomadas, contactos nuevos, datos de proyectos, novedades, compromisos, problemas. Lista de puntos cortos. Si no hay nada nuevo relevante, responde exactamente: NADA\n\nConversacion:\n";
 
 const MODES = {
-  general:{ qa:['📧 Ver emails','📅 Ver agenda','¿Qué priorizo hoy?','Resumí mi semana'] },
-  real_estate:{ qa:['Valuá esta prop','Análisis de riesgo','Cap rate y TIR','Comp de mercado'] },
-  research:{ qa:['Mercado NQN 2026','Retail Argentina','Análisis macro','Competidores'] },
-  docs:{ qa:['Redactá un email','Armá propuesta','Memo ejecutivo','Resumen proyecto'] },
-  tasks:{ qa:['¿Qué priorizar?','Checklist proyecto','Seguimiento deals','Plan semana'] },
-  strategy:{ qa:['Estrategia expansión','Análisis competitivo','Posicionamiento','Próximos movimientos'] }
+  general:{ qa:['Ver emails','Ver agenda','Buscar en web','Que priorizo hoy?'] },
+  real_estate:{ qa:['Valua esta prop','Analisis de riesgo','Cap rate y TIR','Comp de mercado'] },
+  research:{ qa:['Mercado NQN 2026','Retail Argentina','Analisis macro','Competidores'] },
+  docs:{ qa:['Redacta un email','Arma propuesta','Memo ejecutivo','Resumen proyecto'] },
+  tasks:{ qa:['Que priorizar?','Checklist proyecto','Seguimiento deals','Plan semana'] },
+  strategy:{ qa:['Estrategia expansion','Analisis competitivo','Posicionamiento','Proximos movimientos'] }
 };
+
+const SEARCH_TRIGGERS = /precio|cotizacion|dolar|euro|mercado|noticia|hoy|actual|2026|normativa|ley|decreto|inflacion|tasa|indice|licitacion|resultado|quien gano|ultimo/i;
 
 let mode='general', msgs=[], busy=false, cloudMemory='', gmailConnected=false;
 
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 
-// GMAIL
 async function checkGmailStatus(){
   try{
-    const r = await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get',key:'gmail_tokens'})});
-    const d = await r.json();
-    if(d.value && d.value !== ''){
-      gmailConnected = true;
-      const btn = document.getElementById('gmail-btn');
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get',key:'gmail_tokens'})});
+    const d=await r.json();
+    if(d.value&&d.value!==''){
+      gmailConnected=true;
+      const btn=document.getElementById('gmail-btn');
       btn.classList.add('connected');
-      btn.textContent = '📧 Gmail ✓';
+      btn.textContent='Gmail OK';
     }
   }catch(e){}
 }
 
 function toggleGmail(){
-  if(!gmailConnected){
-    window.location.href = '/api/auth?action=login';
-  } else {
-    go('Mostrá mis últimos emails sin leer y resumime lo más importante');
-  }
+  if(!gmailConnected){ window.location.href='/api/auth?action=login'; }
+  else{ go('Mostra mis ultimos emails sin leer y resumime lo mas importante'); }
 }
 
-async function fetchEmails(query='is:unread'){
+async function fetchEmails(query){
+  query=query||'is:unread';
   try{
-    const r = await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',query})});
-    const d = await r.json();
-    return d.emails || [];
+    const r=await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',query:query})});
+    const d=await r.json();
+    return d.emails||[];
   }catch(e){ return []; }
 }
 
-async function sendEmail(to, subject, body){
+async function sendEmail(to,subject,body){
   try{
-    await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send',to,subject,body})});
+    await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send',to:to,subject:subject,body:body})});
     return true;
   }catch(e){ return false; }
 }
 
-// CALENDAR
-async function fetchCalendar(days=7){
+async function fetchCalendar(days){
+  days=days||7;
   try{
-    const r = await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',days})});
-    const d = await r.json();
-    return d.events || [];
+    const r=await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',days:days})});
+    const d=await r.json();
+    return d.events||[];
   }catch(e){ return []; }
 }
 
-async function createCalendarEvent(title, start, end, description=''){
+async function createCalendarEvent(title,start,end,description){
+  description=description||'';
   try{
-    const r = await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',title,start,end,description})});
-    const d = await r.json();
+    const r=await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',title:title,start:start,end:end,description:description})});
+    const d=await r.json();
     return d.ok;
   }catch(e){ return false; }
 }
 
-function renderEmails(emails){
-  if(!emails.length) return '<p>No hay emails sin leer.</p>';
-  return emails.map(e=>`
-    <div class="email-card">
-      <div class="email-from">${e.from||'Desconocido'}</div>
-      <div class="email-subject">${e.subject||'Sin asunto'}</div>
-      <div class="email-snippet">${e.snippet||''}</div>
-      <div class="email-date">${e.date||''}</div>
-    </div>
-  `).join('');
+async function webSearch(query){
+  try{
+    const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:query})});
+    const d=await r.json();
+    return d;
+  }catch(e){ return null; }
 }
 
-function renderEvents(events){
-  if(!events.length) return '<p>No hay eventos próximos.</p>';
-  return events.map(e=>{
-    const start = e.start ? new Date(e.start).toLocaleString('es-AR',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
-    return `
-      <div class="event-card">
-        <div class="event-title">${e.title||'Sin título'}</div>
-        <div class="event-time">📅 ${start}</div>
-        ${e.location?`<div class="event-desc">📍 ${e.location}</div>`:''}
-        ${e.description?`<div class="event-desc">${e.description}</div>`:''}
-      </div>
-    `;
+function renderEmails(emails){
+  if(!emails.length) return '<p>No hay emails sin leer.</p>';
+  return emails.map(function(e){
+    return '<div class="email-card"><div class="email-from">'+(e.from||'Desconocido')+'</div><div class="email-subject">'+(e.subject||'Sin asunto')+'</div><div class="email-snippet">'+(e.snippet||'')+'</div><div class="email-date">'+(e.date||'')+'</div></div>';
   }).join('');
 }
 
-// MEMORIA
+function renderEvents(events){
+  if(!events.length) return '<p>No tenes eventos proximos.</p>';
+  return events.map(function(e){
+    var start='';
+    if(e.start){ try{ start=new Date(e.start).toLocaleString('es-AR',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); }catch(err){start=e.start;} }
+    return '<div class="event-card"><div class="event-title">'+(e.title||'Sin titulo')+'</div><div class="event-time">'+start+'</div>'+(e.location?'<div class="event-desc">'+e.location+'</div>':'')+(e.description?'<div class="event-desc">'+e.description+'</div>':'')+'</div>';
+  }).join('');
+}
+
 async function loadMemory(){
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get_memory'})});
@@ -327,38 +286,42 @@ function getSystem(){
 
 async function openMem(){ await loadMemory(); document.getElementById('mem-text').value=cloudMemory; document.getElementById('mem-panel').classList.add('open'); }
 function closeMem(e){ if(!e||e.target===document.getElementById('mem-panel')) document.getElementById('mem-panel').classList.remove('open'); }
-async function saveMem(){ const txt=document.getElementById('mem-text').value; await saveCloudMemory(txt); document.getElementById('mem-panel').classList.remove('open'); toast('✅ Guardado en la nube'); }
-async function clearMem(){ if(confirm('¿Borrar toda la memoria?')){ await saveCloudMemory(''); document.getElementById('mem-text').value=''; toast('🗑️ Memoria borrada'); } }
+async function saveMem(){ var txt=document.getElementById('mem-text').value; await saveCloudMemory(txt); document.getElementById('mem-panel').classList.remove('open'); toast('Guardado en la nube'); }
+async function clearMem(){ if(confirm('Borrar toda la memoria?')){ await saveCloudMemory(''); document.getElementById('mem-text').value=''; toast('Memoria borrada'); } }
 
 async function autoSaveMemory(){
   if(msgs.length<4) return;
-  const convo=msgs.map(m=>m.role.toUpperCase()+': '+m.content).join('\n\n');
+  var convo=msgs.map(function(m){ return m.role.toUpperCase()+': '+m.content; }).join('\n\n');
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Sos un extractor conciso.',messages:[{role:'user',content:EXTRACT_PROMPT+convo}]})});
-    const d=await r.json();
-    const extracted=d.content?.[0]?.text?.trim();
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Sos un extractor conciso.',messages:[{role:'user',content:EXTRACT_PROMPT+convo}]})});
+    var d=await r.json();
+    var extracted=d.content&&d.content[0]&&d.content[0].text?d.content[0].text.trim():'';
     if(extracted&&extracted!=='NADA'&&extracted.length>5){
-      const date=new Date().toLocaleDateString('es-AR');
-      const newMem=cloudMemory?cloudMemory+'\n\n['+date+']\n'+extracted:'['+date+']\n'+extracted;
+      var date=new Date().toLocaleDateString('es-AR');
+      var newMem=cloudMemory?cloudMemory+'\n\n['+date+']\n'+extracted:'['+date+']\n'+extracted;
       await saveCloudMemory(newMem);
-      toast('🧠 Memoria actualizada');
+      toast('Memoria actualizada');
     }
   }catch(e){}
 }
 
 function setMode(m){ mode=m; updateQA(); }
-function updateQA(){ document.getElementById('quick').innerHTML=MODES[mode].qa.map(a=>`<button class="qa" onclick="go('${a.replace(/'/g,"\\'")}')">${a}</button>`).join(''); }
+function updateQA(){
+  document.getElementById('quick').innerHTML=MODES[mode].qa.map(function(a){
+    return '<button class="qa" onclick="go(\''+a.replace(/'/g,"\\'")+'\')">' +a+'</button>';
+  }).join('');
+}
 function showChat(){ document.getElementById('welcome').style.display='none'; document.getElementById('messages').style.display='flex'; }
 function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
 function resize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
 function go(text){ document.getElementById('inp').value=text; send(); }
 
-function addMsg(role,content,isHtml=false){
+function addMsg(role,content,isHtml){
   showChat();
-  const c=document.getElementById('messages');
-  const d=document.createElement('div'); d.className='msg '+(role==='assistant'?'a':'u');
-  const av=document.createElement('div'); av.className='avatar '+(role==='assistant'?'a':'u'); av.textContent=role==='assistant'?'⚡':'GN';
-  const b=document.createElement('div'); b.className='bubble';
+  var c=document.getElementById('messages');
+  var d=document.createElement('div'); d.className='msg '+(role==='assistant'?'a':'u');
+  var av=document.createElement('div'); av.className='avatar '+(role==='assistant'?'a':'u'); av.textContent=role==='assistant'?'⚡':'GN';
+  var b=document.createElement('div'); b.className='bubble';
   if(isHtml) b.innerHTML=content;
   else b.innerHTML=role==='assistant'?md(content):esc(content);
   d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight;
@@ -367,7 +330,7 @@ function addMsg(role,content,isHtml=false){
 function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function md(t){
   return t
-    .replace(/```[\w]*\n([\s\S]*?)```/g,(_,c)=>`<pre><code>${esc(c.trim())}</code></pre>`)
+    .replace(/```[\w]*\n([\s\S]*?)```/g,function(_,c){ return '<pre><code>'+esc(c.trim())+'</code></pre>'; })
     .replace(/`([^`]+)`/g,'<code>$1</code>')
     .replace(/^### (.+)$/gm,'<h3>$1</h3>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
@@ -377,23 +340,31 @@ function md(t){
     .replace(/^(?!<)(.+)/gm,'<p>$1</p>').replace(/<p><\/p>/g,'');
 }
 
-let typingEl=null;
-function showTyping(){ showChat(); const c=document.getElementById('messages'); const d=document.createElement('div'); d.className='msg a'; d.id='typing'; const av=document.createElement('div'); av.className='avatar a'; av.textContent='⚡'; const b=document.createElement('div'); b.className='bubble'; b.innerHTML='<div class="typing"><span></span><span></span><span></span></div>'; d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight; typingEl=d; }
+var typingEl=null;
+function showTyping(){
+  showChat();
+  var c=document.getElementById('messages');
+  var d=document.createElement('div'); d.className='msg a'; d.id='typing';
+  var av=document.createElement('div'); av.className='avatar a'; av.textContent='⚡';
+  var b=document.createElement('div'); b.className='bubble';
+  b.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+  d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight; typingEl=d;
+}
 function removeTyping(){ if(typingEl){typingEl.remove();typingEl=null;} }
 
 function isEmailRequest(text){
-  const t=text.toLowerCase();
-  return t.includes('email') || t.includes('correo') || t.includes('mail') || t.includes('bandeja') || t.includes('sin leer') || (t.includes('mensaje') && !t.includes('whatsapp'));
+  var t=text.toLowerCase();
+  return t.indexOf('email')>=0||t.indexOf('correo')>=0||t.indexOf('mail')>=0||t.indexOf('bandeja')>=0||t.indexOf('sin leer')>=0||(t.indexOf('mensaje')>=0&&t.indexOf('whatsapp')<0);
 }
 
 function isCalendarRequest(text){
-  const t=text.toLowerCase();
-  return t.includes('agenda') || t.includes('reunión') || t.includes('reunion') || t.includes('evento') || t.includes('calendario') || t.includes('calendar') || t.includes('turno') && t.includes('hoy') || t.includes('semana') && (t.includes('qué tengo') || t.includes('que tengo'));
+  var t=text.toLowerCase();
+  return t.indexOf('agenda')>=0||t.indexOf('reuni')>=0||t.indexOf('evento')>=0||t.indexOf('calendario')>=0||t.indexOf('calendar')>=0||(t.indexOf('semana')>=0&&(t.indexOf('que tengo')>=0||t.indexOf('qué tengo')>=0));
 }
 
 async function send(){
-  const inp=document.getElementById('inp');
-  const text=inp.value.trim();
+  var inp=document.getElementById('inp');
+  var text=inp.value.trim();
   if(!text||busy) return;
   inp.value=''; inp.style.height='auto';
   busy=true; document.getElementById('sendbtn').disabled=true;
@@ -401,70 +372,75 @@ async function send(){
   addMsg('user',text); showTyping();
 
   try{
-    // EMAILS
-    if(isEmailRequest(text) && gmailConnected){
-      const emails = await fetchEmails();
+    if(isEmailRequest(text)&&gmailConnected){
+      var emails=await fetchEmails('is:unread');
       removeTyping();
       if(emails.length>0){
-        const emailsHtml = '<p>📧 <strong>Tus últimos emails:</strong></p>' + renderEmails(emails);
-        addMsg('assistant', emailsHtml, true);
-        const emailsText = emails.map(e=>`De: ${e.from}\nAsunto: ${e.subject}\nResumen: ${e.snippet}`).join('\n\n');
-        msgs.push({role:'assistant',content:'Te muestro los emails. Analizándolos...'});
+        addMsg('assistant','<p><strong>Tus ultimos emails:</strong></p>'+renderEmails(emails),true);
+        var emailsText=emails.map(function(e){ return 'De: '+e.from+'\nAsunto: '+e.subject+'\nResumen: '+e.snippet; }).join('\n\n');
+        msgs.push({role:'assistant',content:'Te muestro los emails.'});
         showTyping();
-        const r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...msgs,{role:'user',content:`Analizá estos emails y decime qué es lo más importante y urgente:\n\n${emailsText}`}],system:getSystem()})});
-        const d2=await r2.json();
+        var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.concat([{role:'user',content:'Analiza estos emails y decime que es lo mas importante y urgente:\n\n'+emailsText}]),system:getSystem()})});
+        var d2=await r2.json();
         removeTyping();
-        const reply2=d2.content?.[0]?.text||'';
+        var reply2=d2.content&&d2.content[0]?d2.content[0].text:'';
         if(reply2){ msgs.push({role:'assistant',content:reply2}); addMsg('assistant',reply2); }
       } else {
         addMsg('assistant','No hay emails sin leer en este momento.');
       }
     }
-    // CALENDAR
-    else if(isCalendarRequest(text) && gmailConnected){
-      const events = await fetchCalendar(7);
+    else if(isCalendarRequest(text)&&gmailConnected){
+      var events=await fetchCalendar(7);
       removeTyping();
       if(events.length>0){
-        const eventsHtml = '<p>📅 <strong>Tus próximos eventos:</strong></p>' + renderEvents(events);
-        addMsg('assistant', eventsHtml, true);
-        const eventsText = events.map(e=>`Título: ${e.title}\nFecha: ${e.start}\n${e.description||''}`).join('\n\n');
+        addMsg('assistant','<p><strong>Tus proximos eventos:</strong></p>'+renderEvents(events),true);
+        var eventsText=events.map(function(e){ return 'Titulo: '+e.title+'\nFecha: '+e.start+'\n'+(e.description||''); }).join('\n\n');
         msgs.push({role:'assistant',content:'Te muestro la agenda.'});
         showTyping();
-        const r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...msgs,{role:'user',content:`Analizá estos eventos y dame un resumen ejecutivo de la semana:\n\n${eventsText}`}],system:getSystem()})});
-        const d2=await r2.json();
+        var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.concat([{role:'user',content:'Analiza estos eventos y dame un resumen ejecutivo de la semana:\n\n'+eventsText}]),system:getSystem()})});
+        var d2=await r2.json();
         removeTyping();
-        const reply2=d2.content?.[0]?.text||'';
+        var reply2=d2.content&&d2.content[0]?d2.content[0].text:'';
         if(reply2){ msgs.push({role:'assistant',content:reply2}); addMsg('assistant',reply2); }
       } else {
-        addMsg('assistant','No tenés eventos en los próximos 7 días.');
+        addMsg('assistant','No tenes eventos en los proximos 7 dias.');
       }
     }
-    // CHAT NORMAL
     else {
-      const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.slice(-14),system:getSystem()})});
-      const d=await r.json();
+      var searchContext='';
+      if(SEARCH_TRIGGERS.test(text)){
+        toast('Buscando info actualizada...');
+        var results=await webSearch(text);
+        if(results&&(results.answer||results.results&&results.results.length)){
+          searchContext='\n\nINFO WEB EN TIEMPO REAL:\n';
+          if(results.answer) searchContext+=results.answer+'\n\n';
+          if(results.results&&results.results.length) searchContext+=results.results.map(function(r){ return '- '+r.title+': '+r.snippet; }).join('\n');
+        }
+      }
+      var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.slice(-14),system:getSystem()+searchContext})});
+      var d=await r.json();
       removeTyping();
       if(d.error) throw new Error(d.error.message||JSON.stringify(d.error));
-      const reply=d.content?.[0]?.text||'Sin respuesta.';
+      var reply=d.content&&d.content[0]?d.content[0].text:'Sin respuesta.';
       msgs.push({role:'assistant',content:reply});
       addMsg('assistant',reply);
     }
 
     if(msgs.length%6===0) autoSaveMemory();
-  }catch(err){ removeTyping(); addMsg('assistant',`**Error:** ${err.message}`); }
+  }catch(err){ removeTyping(); addMsg('assistant','Error: '+err.message); }
 
   busy=false; document.getElementById('sendbtn').disabled=false; inp.focus();
 }
 
-window.addEventListener('beforeunload',()=>{ if(msgs.length>=4) autoSaveMemory(); });
-document.addEventListener('visibilitychange',()=>{ if(document.hidden&&msgs.length>=4) autoSaveMemory(); });
+window.addEventListener('beforeunload',function(){ if(msgs.length>=4) autoSaveMemory(); });
+document.addEventListener('visibilitychange',function(){ if(document.hidden&&msgs.length>=4) autoSaveMemory(); });
 
-if(window.location.search.includes('gmail=connected')){ toast('📧 Gmail y Calendar conectados'); window.history.replaceState({},'','/'); }
+if(window.location.search.indexOf('gmail=connected')>=0){ toast('Gmail y Calendar conectados'); window.history.replaceState({},'','/'); }
 
 updateQA();
 loadMemory();
 checkGmailStatus();
-setTimeout(()=>document.getElementById('inp').focus(),300);
+setTimeout(function(){ document.getElementById('inp').focus(); },300);
 </script>
 </body>
 </html>
