@@ -42,11 +42,16 @@ export default async function handler(req, res) {
 
     if (action === 'list') {
       const r = await fetch(
-        "https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.spreadsheet'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=20",
+        'https://www.googleapis.com/drive/v3/files?fields=files(id,name,modifiedTime,mimeType)&orderBy=modifiedTime+desc&pageSize=50&includeItemsFromAllDrives=true&supportsAllDrives=true',
         { headers: { Authorization: auth } }
       );
       const d = await r.json();
-      return res.status(200).json({ sheets: d.files || [] });
+      if (d.error) return res.status(400).json({ error: d.error.message, raw: d });
+      const sheets = (d.files || []).filter(f =>
+        f.mimeType === 'application/vnd.google-apps.spreadsheet' ||
+        f.mimeType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+      return res.status(200).json({ sheets, all: d.files });
     }
 
     if (action === 'read') {
