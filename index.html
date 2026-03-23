@@ -11,7 +11,6 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{--blue:#22334C;--gold:#A9926D;--gold-l:#C8AE8A;--dark:#0D1520;--mid:#1A2840;--muted:#8899AA;--white:#ffffff;--border:rgba(169,146,109,0.2);}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--dark);color:var(--white);height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
-
 #topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--blue);border-bottom:1px solid var(--border);flex-shrink:0;}
 #topbar .left{display:flex;flex-direction:column;}
 #topbar .logo{font-size:10px;color:var(--gold);letter-spacing:2px;font-weight:600;}
@@ -19,7 +18,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .top-btns{display:flex;gap:8px;align-items:center;}
 #mode-selector{background:rgba(255,255,255,0.07);border:1px solid var(--border);color:var(--white);font-size:12px;padding:5px 10px;border-radius:8px;cursor:pointer;outline:none;}
 #mem-btn{background:rgba(169,146,109,0.15);border:1px solid var(--gold);color:var(--gold);font-size:11px;padding:5px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;}
-
 #messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;-webkit-overflow-scrolling:touch;}
 #messages::-webkit-scrollbar{display:none;}
 .msg{display:flex;gap:10px;animation:fadeIn 0.2s ease;}
@@ -47,12 +45,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .typing span:nth-child(2){animation-delay:.2s;}
 .typing span:nth-child(3){animation-delay:.4s;}
 @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-
 #quick{display:flex;gap:6px;padding:8px 16px;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch;}
 #quick::-webkit-scrollbar{display:none;}
 .qa{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:#AAB8C8;font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .qa:active{background:rgba(169,146,109,0.15);border-color:var(--gold);color:var(--gold);}
-
 #welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:30px 20px;}
 #welcome .ico{font-size:40px;margin-bottom:14px;}
 #welcome h2{font-size:20px;font-weight:500;margin-bottom:6px;}
@@ -63,7 +59,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sug .si{font-size:18px;margin-bottom:6px;}
 .sug .st{font-size:12px;font-weight:500;color:var(--white);margin-bottom:3px;}
 .sug .ss{font-size:11px;color:var(--muted);line-height:1.3;}
-
 #inputarea{padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:var(--mid);border-top:1px solid var(--border);flex-shrink:0;}
 #inputrow{display:flex;gap:8px;align-items:flex-end;}
 #inp{flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--white);font-size:15px;font-family:inherit;resize:none;min-height:42px;max-height:120px;outline:none;line-height:1.5;}
@@ -72,25 +67,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #sendbtn{width:42px;height:42px;border-radius:10px;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 #sendbtn:active{background:var(--gold-l);transform:scale(0.95);}
 #sendbtn svg{width:18px;height:18px;fill:var(--dark);}
-
-/* MEMORY PANEL */
 #mem-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:flex-end;}
 #mem-panel.open{display:flex;}
-#mem-box{background:var(--mid);border-radius:16px 16px 0 0;border-top:2px solid var(--gold);width:100%;max-height:80vh;display:flex;flex-direction:column;padding:0;}
+#mem-box{background:var(--mid);border-radius:16px 16px 0 0;border-top:2px solid var(--gold);width:100%;max-height:85vh;display:flex;flex-direction:column;}
 #mem-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);}
 #mem-header h3{font-size:15px;font-weight:500;color:var(--gold);}
-#mem-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0;}
-#mem-body{padding:14px 18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+#mem-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+#mem-body{padding:14px 18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
 #mem-body label{font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;display:block;}
-#mem-text{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--white);font-size:13px;font-family:inherit;resize:none;min-height:180px;outline:none;line-height:1.6;width:100%;}
+#mem-text{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--white);font-size:13px;font-family:inherit;resize:none;min-height:200px;outline:none;line-height:1.6;width:100%;}
 #mem-text:focus{border-color:var(--gold);}
-#mem-hint{font-size:11px;color:var(--muted);line-height:1.5;}
+.mem-hint{font-size:11px;color:var(--muted);line-height:1.6;}
 #mem-footer{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:8px;}
 #mem-save{flex:1;background:var(--gold);border:none;color:var(--dark);font-size:14px;font-weight:600;padding:12px;border-radius:10px;cursor:pointer;}
-#mem-save:active{background:var(--gold-l);}
 #mem-clear{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);font-size:13px;padding:12px 16px;border-radius:10px;cursor:pointer;}
-.mem-saved{background:rgba(169,146,109,0.15);border:1px solid var(--gold);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--gold);text-align:center;display:none;}
-.mem-saved.show{display:block;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(169,146,109,0.95);color:var(--dark);font-size:13px;font-weight:600;padding:10px 20px;border-radius:20px;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
 </style>
 </head>
 <body>
@@ -117,15 +109,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div id="welcome">
     <div class="ico">⚡</div>
     <h2>Hola Gastón</h2>
-    <p>Tu asistente personal Elevato. ¿En qué arrancamos?</p>
+    <p>Tu asistente personal. Recuerda todo, desde cualquier dispositivo.</p>
     <div class="sug-grid">
-      <div class="sug" onclick="go('¿Qué proyectos tenemos activos ahora mismo y cuál es el estado de cada uno?')">
+      <div class="sug" onclick="go('¿Qué proyectos tenemos activos y cuál es el estado de cada uno?')">
         <div class="si">📊</div><div class="st">Estado proyectos</div><div class="ss">Resumen de todo lo activo</div>
       </div>
       <div class="sug" onclick="go('Hacé un resumen ejecutivo del Strip Mall Plataforma Neuquén para un inversor')">
         <div class="si">🏢</div><div class="st">Strip Mall NQN</div><div class="ss">Pitch ejecutivo listo</div>
       </div>
-      <div class="sug" onclick="go('Redactá un email profesional para presentar Elevato Group a un nuevo inversor institucional')">
+      <div class="sug" onclick="go('Redactá un email para presentar Elevato Group a un inversor institucional')">
         <div class="si">✉️</div><div class="st">Email inversor</div><div class="ss">Pitch profesional</div>
       </div>
       <div class="sug" onclick="go('¿Qué debería priorizar esta semana para avanzar con Mote y Elevato?')">
@@ -148,29 +140,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- MEMORY PANEL -->
 <div id="mem-panel" onclick="closeMem(event)">
   <div id="mem-box">
     <div id="mem-header">
-      <h3>🧠 Tu Memoria</h3>
+      <h3>🧠 Memoria de Gastón</h3>
       <button id="mem-close" onclick="closeMem()">×</button>
     </div>
     <div id="mem-body">
       <div>
-        <label>Contexto personalizado</label>
-        <textarea id="mem-text" placeholder="Contale cualquier cosa que quieras que recuerde...
-
-Ejemplos:
-- Mi reunión con Leonardo Tenaglia es el jueves
-- El proyecto de Funes está en pausa por falta de inversor
-- Quiero enfocarme en cerrar Zona 135-1 antes de junio
-- El contacto clave de La Anónima se llama Martín
-- Mote tiene un problema con el proveedor de verduras esta semana"></textarea>
+        <label>Lo que el agente recuerda — guardado en la nube</label>
+        <textarea id="mem-text" placeholder="Cargando memoria..."></textarea>
       </div>
       <div class="mem-hint">
-        Todo lo que escribas acá el agente lo va a recordar en cada conversación, para siempre. Podés agregar, editar o borrar cuando quieras.
+        ✅ Se guarda en la nube — funciona desde el celu, la PC, cualquier dispositivo.<br><br>
+        🤖 El agente actualiza esto automáticamente al final de cada conversación.<br><br>
+        ✏️ También podés escribir o pegar info directamente acá.
       </div>
-      <div class="mem-saved" id="mem-saved">✅ Guardado — el agente ya lo recuerda</div>
     </div>
     <div id="mem-footer">
       <button id="mem-clear" onclick="clearMem()">Borrar todo</button>
@@ -179,31 +164,35 @@ Ejemplos:
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 const BASE_SYSTEM = `Sos el asistente estratégico, operativo y financiero de alto nivel de Gastón Narbeury.
 
-PERFIL: Emprendedor argentino, operador y estratega. Directo, exigente, práctico. Alto nivel, no explicar lo básico. Ir al grano, no repetir, no suavizar, entregar soluciones listas.
+PERFIL: Emprendedor argentino, operador y estratega. Directo, exigente, práctico. Alto nivel — no explicar lo básico. Ir al grano, no repetir, no suavizar, entregar soluciones listas.
 
 EMPRESAS:
 1. MOTE GREEN MARKET: retail saludable (frutas, verduras, dietética). E-commerce + delivery + pick-up. 2 turnos, 16 pedidos/turno, 1 camioneta. Problemas: cuello de botella en armado, retrasos segundo turno, falta sistema de stock.
 2. ELEVATOGROUP: consultora + desarrollo inmobiliario. Detecta oportunidades, analiza normativa, diseña proyectos, consigue operadores, estructura contratos, captura valor. Objetivo: pasar de intermediario a equity propio.
 
 PROYECTOS ACTIVOS:
-- PedidosYa: dark store, contrato cerrado, replicar modelo
+- PedidosYa/Delivery Hero: dark store, contrato cerrado, replicar modelo
 - Strip Mall NQN: R22, 4200m2, ON CITY (1080m2) + MQ BAZAR (1980m2), inicio obra Junio 2026
 - Zona 135-1 NQN: 80450m2, La Anónima anchor, desarrollo mixto comercial + residencial
 - Funes SF: corredor RP-34S, retail/strip center, análisis y posicionamiento
 - Pilar/Escobar: retail + logística, zonificación IMIXC, scouting
-- San Nicolás: lote esquina ~1025m2, reserva/negociación, uso comercial/logístico
-- Rosario Av. San Martín 5263: compra + locación, interviene Leonardo Tenaglia
+- San Nicolás: lote esquina ~1025m2, reserva/negociación
+- Rosario Av. San Martín 5263: compra + locación, Leonardo Tenaglia
 
-CONTACTOS: Leonardo Tenaglia (broker), Nacho/Ignacio (socio), Ezequiel (arquitecto), Alan (dev web), Ludmila (operación), Lucas (verdulería). Corporativos: PedidosYa/Delivery Hero, Chango Más, La Anónima, Toribio Achával.
+CONTACTOS: Leonardo Tenaglia (broker), Nacho/Ignacio (socio), Ezequiel (arquitecto), Alan (dev web), Ludmila (operación), Lucas (verdulería). Corporativos: PedidosYa, Chango Más, La Anónima, Toribio Achával.
 
-FORMA DE TRABAJO: Excel intensivo, itera rápido (v1/v2/v3), todo en números. Siempre considerar: CAPEX, OPEX, ROI, NPV, IRR, Payback, inflación vs USD. No sabe programar — evitar soluciones técnicas complejas.
+FORMA DE TRABAJO: Excel intensivo, itera rápido, todo en números. Siempre: CAPEX, OPEX, ROI, NPV, IRR, Payback, inflación vs USD. No sabe programar.
 
 OBJETIVO: "Construir un sistema que pase de generar ingresos por operación a generar riqueza por activos."
 
 Respondé siempre: directo al punto, soluciones accionables, números concretos, como socio estratégico senior. Español argentino.`;
+
+const EXTRACT_PROMPT = `Analizá esta conversación y extraé SOLO la información nueva y relevante que Gastón debería recordar: decisiones tomadas, contactos nuevos, datos de proyectos, novedades, compromisos, problemas. Lista de puntos cortos. Si no hay nada nuevo relevante, respondé exactamente: NADA\n\nConversación:\n`;
 
 const MODES = {
   general:{ qa:['¿Qué priorizo hoy?','Resumí mi semana','Novedades del mercado','Ayudame a escribir'] },
@@ -214,79 +203,81 @@ const MODES = {
   strategy:{ qa:['Estrategia expansión','Análisis competitivo','Posicionamiento','Próximos movimientos'] }
 };
 
-let mode = 'general';
-let msgs = [];
-let busy = false;
+let mode='general', msgs=[], busy=false, cloudMemory='';
 
-function getMemory(){ return localStorage.getItem('gaston_memory') || ''; }
-function saveMemory(txt){ localStorage.setItem('gaston_memory', txt); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+
+async function loadMemory(){
+  try{
+    const r = await fetch('/api/chat',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'get_memory'}) });
+    const data = await r.json();
+    cloudMemory = data.memory || '';
+  }catch(e){ cloudMemory=''; }
+}
+
+async function saveCloudMemory(content){
+  try{
+    await fetch('/api/chat',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'save_memory', memory:content}) });
+    cloudMemory = content;
+  }catch(e){ console.log('save error',e); }
+}
 
 function getSystem(){
-  const mem = getMemory();
-  if(mem.trim()) return BASE_SYSTEM + '\n\nMEMORIA ADICIONAL (info actualizada por Gastón):\n' + mem;
+  if(cloudMemory.trim()) return BASE_SYSTEM + '\n\nMEMORIA (aprendido de conversaciones anteriores):\n' + cloudMemory;
   return BASE_SYSTEM;
 }
 
-function openMem(){
-  document.getElementById('mem-text').value = getMemory();
+async function openMem(){
+  await loadMemory();
+  document.getElementById('mem-text').value = cloudMemory;
   document.getElementById('mem-panel').classList.add('open');
-  document.getElementById('mem-saved').classList.remove('show');
 }
-
-function closeMem(e){
-  if(!e || e.target === document.getElementById('mem-panel'))
-    document.getElementById('mem-panel').classList.remove('open');
-}
-
-function saveMem(){
+function closeMem(e){ if(!e||e.target===document.getElementById('mem-panel')) document.getElementById('mem-panel').classList.remove('open'); }
+async function saveMem(){
   const txt = document.getElementById('mem-text').value;
-  saveMemory(txt);
-  document.getElementById('mem-saved').classList.add('show');
-  setTimeout(()=>document.getElementById('mem-saved').classList.remove('show'), 2500);
+  await saveCloudMemory(txt);
+  document.getElementById('mem-panel').classList.remove('open');
+  toast('✅ Guardado en la nube');
+}
+async function clearMem(){
+  if(confirm('¿Borrar toda la memoria?')){ await saveCloudMemory(''); document.getElementById('mem-text').value=''; toast('🗑️ Memoria borrada'); }
 }
 
-function clearMem(){
-  if(confirm('¿Borrar toda la memoria?')){
-    localStorage.removeItem('gaston_memory');
-    document.getElementById('mem-text').value = '';
-  }
+async function autoSaveMemory(){
+  if(msgs.length<4) return;
+  const convo = msgs.map(m=>m.role.toUpperCase()+': '+m.content).join('\n\n');
+  try{
+    const r = await fetch('/api/chat',{ method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ system:'Sos un extractor conciso de información relevante.', messages:[{role:'user',content:EXTRACT_PROMPT+convo}] })
+    });
+    const data = await r.json();
+    const extracted = data.content?.[0]?.text?.trim();
+    if(extracted && extracted!=='NADA' && extracted.length>5){
+      const date = new Date().toLocaleDateString('es-AR');
+      const newMem = cloudMemory ? cloudMemory+'\n\n['+date+']\n'+extracted : '['+date+']\n'+extracted;
+      await saveCloudMemory(newMem);
+      toast('🧠 Memoria actualizada');
+    }
+  }catch(e){ console.log('auto-save error',e); }
 }
 
-function setMode(m){ mode = m; updateQA(); }
-
-function updateQA(){
-  const qa = document.getElementById('quick');
-  qa.innerHTML = MODES[mode].qa.map(a =>
-    `<button class="qa" onclick="go('${a.replace(/'/g,"\\'")}')">${a}</button>`).join('');
-}
-
-function showChat(){
-  document.getElementById('welcome').style.display = 'none';
-  document.getElementById('messages').style.display = 'flex';
-}
-
+function setMode(m){ mode=m; updateQA(); }
+function updateQA(){ document.getElementById('quick').innerHTML=MODES[mode].qa.map(a=>`<button class="qa" onclick="go('${a.replace(/'/g,"\\'")}')">${a}</button>`).join(''); }
+function showChat(){ document.getElementById('welcome').style.display='none'; document.getElementById('messages').style.display='flex'; }
 function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
 function resize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
 function go(text){ document.getElementById('inp').value=text; send(); }
 
-function addMsg(role, content){
+function addMsg(role,content){
   showChat();
-  const container = document.getElementById('messages');
-  const d = document.createElement('div');
-  d.className = 'msg ' + (role==='assistant' ? 'a' : 'u');
-  const av = document.createElement('div');
-  av.className = 'avatar ' + (role==='assistant' ? 'a' : 'u');
-  av.textContent = role==='assistant' ? '⚡' : 'GN';
-  const b = document.createElement('div');
-  b.className = 'bubble';
-  b.innerHTML = role==='assistant' ? md(content) : esc(content);
-  d.appendChild(av); d.appendChild(b);
-  container.appendChild(d);
-  container.scrollTop = container.scrollHeight;
+  const c=document.getElementById('messages');
+  const d=document.createElement('div'); d.className='msg '+(role==='assistant'?'a':'u');
+  const av=document.createElement('div'); av.className='avatar '+(role==='assistant'?'a':'u'); av.textContent=role==='assistant'?'⚡':'GN';
+  const b=document.createElement('div'); b.className='bubble'; b.innerHTML=role==='assistant'?md(content):esc(content);
+  d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight;
 }
 
 function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
 function md(t){
   return t
     .replace(/```[\w]*\n([\s\S]*?)```/g,(_,c)=>`<pre><code>${esc(c.trim())}</code></pre>`)
@@ -295,60 +286,41 @@ function md(t){
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/^[\-\*] (.+)$/gm,'<li>$1</li>')
     .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>')
-    .replace(/\n\n/g,'</p><p>')
-    .replace(/\n/g,'<br>')
-    .replace(/^(?!<)(.+)/gm,'<p>$1</p>')
-    .replace(/<p><\/p>/g,'');
+    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')
+    .replace(/^(?!<)(.+)/gm,'<p>$1</p>').replace(/<p><\/p>/g,'');
 }
 
-let typingEl = null;
-function showTyping(){
-  showChat();
-  const container = document.getElementById('messages');
-  const d = document.createElement('div');
-  d.className = 'msg a'; d.id = 'typing';
-  const av = document.createElement('div'); av.className='avatar a'; av.textContent='⚡';
-  const b = document.createElement('div'); b.className='bubble';
-  b.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
-  d.appendChild(av); d.appendChild(b);
-  container.appendChild(d); container.scrollTop = container.scrollHeight;
-  typingEl = d;
-}
-function removeTyping(){ if(typingEl){ typingEl.remove(); typingEl=null; } }
+let typingEl=null;
+function showTyping(){ showChat(); const c=document.getElementById('messages'); const d=document.createElement('div'); d.className='msg a'; d.id='typing'; const av=document.createElement('div'); av.className='avatar a'; av.textContent='⚡'; const b=document.createElement('div'); b.className='bubble'; b.innerHTML='<div class="typing"><span></span><span></span><span></span></div>'; d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight; typingEl=d; }
+function removeTyping(){ if(typingEl){typingEl.remove();typingEl=null;} }
 
 async function send(){
-  const inp = document.getElementById('inp');
-  const text = inp.value.trim();
-  if(!text || busy) return;
+  const inp=document.getElementById('inp');
+  const text=inp.value.trim();
+  if(!text||busy) return;
   inp.value=''; inp.style.height='auto';
-  busy = true;
-  document.getElementById('sendbtn').disabled = true;
-  msgs.push({role:'user', content:text});
-  addMsg('user', text);
-  showTyping();
+  busy=true; document.getElementById('sendbtn').disabled=true;
+  msgs.push({role:'user',content:text});
+  addMsg('user',text); showTyping();
   try{
-    const r = await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({messages: msgs.slice(-14), system: getSystem()})
-    });
-    const data = await r.json();
+    const r=await fetch('/api/chat',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:msgs.slice(-14),system:getSystem()}) });
+    const data=await r.json();
     removeTyping();
-    if(data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-    const reply = data.content?.[0]?.text || 'Sin respuesta.';
-    msgs.push({role:'assistant', content:reply});
-    addMsg('assistant', reply);
-  }catch(err){
-    removeTyping();
-    addMsg('assistant', `**Error:** ${err.message}`);
-  }
-  busy = false;
-  document.getElementById('sendbtn').disabled = false;
-  inp.focus();
+    if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+    const reply=data.content?.[0]?.text||'Sin respuesta.';
+    msgs.push({role:'assistant',content:reply});
+    addMsg('assistant',reply);
+    if(msgs.length%6===0) autoSaveMemory();
+  }catch(err){ removeTyping(); addMsg('assistant',`**Error:** ${err.message}`); }
+  busy=false; document.getElementById('sendbtn').disabled=false; inp.focus();
 }
 
+window.addEventListener('beforeunload',()=>{ if(msgs.length>=4) autoSaveMemory(); });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden&&msgs.length>=4) autoSaveMemory(); });
+
 updateQA();
-setTimeout(()=>document.getElementById('inp').focus(), 300);
+loadMemory();
+setTimeout(()=>document.getElementById('inp').focus(),300);
 </script>
 </body>
 </html>
