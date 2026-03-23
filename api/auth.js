@@ -1,16 +1,24 @@
 import { Redis } from '@upstash/redis';
-
 const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
   const { code, action } = req.query;
-  
+
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
   const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
   const REDIRECT_URI = 'https://gaston-ia.vercel.app/api/auth';
 
   if (action === 'login') {
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/gmail.send+https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
+    const scopes = [
+      'https://www.googleapis.com/auth/gmail.readonly',
+      'https://www.googleapis.com/auth/gmail.send',
+      'https://www.googleapis.com/auth/calendar',
+      'https://www.googleapis.com/auth/spreadsheets',
+      'https://www.googleapis.com/auth/documents',
+      'https://www.googleapis.com/auth/drive'
+    ].join(' ');
+
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(scopes)}&access_type=offline&prompt=consent`;
     return res.redirect(authUrl);
   }
 
