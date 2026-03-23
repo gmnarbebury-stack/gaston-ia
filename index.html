@@ -42,6 +42,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bubble table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0;}
 .bubble th{background:rgba(169,146,109,0.15);padding:5px 8px;color:var(--gold);text-align:left;}
 .bubble td{padding:4px 8px;border-top:1px solid rgba(255,255,255,0.06);}
+.bubble a{color:var(--gold-l);text-decoration:underline;}
 .email-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:6px 0;}
 .email-from{font-size:12px;color:var(--gold);font-weight:500;margin-bottom:3px;}
 .email-subject{font-size:13px;color:var(--white);margin-bottom:4px;}
@@ -51,6 +52,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .event-title{font-size:13px;color:var(--white);font-weight:500;margin-bottom:3px;}
 .event-time{font-size:12px;color:var(--gold);margin-bottom:3px;}
 .event-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+.sheet-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:4px 0;display:flex;justify-content:space-between;align-items:center;}
+.sheet-name{font-size:13px;color:var(--white);font-weight:500;}
+.sheet-date{font-size:11px;color:var(--muted);}
+.sheet-id{font-size:10px;color:var(--muted);font-family:monospace;margin-top:2px;}
+.doc-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:4px 0;border-left:3px solid #5B8CDB;}
+.doc-name{font-size:13px;color:var(--white);font-weight:500;}
+.doc-date{font-size:11px;color:var(--muted);}
+.doc-id{font-size:10px;color:var(--muted);font-family:monospace;margin-top:2px;}
+.drive-link{display:inline-block;margin-top:6px;font-size:12px;color:var(--gold-l);text-decoration:underline;cursor:pointer;}
 .typing{display:flex;align-items:center;gap:4px;padding:12px 14px;}
 .typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite;}
 .typing span:nth-child(2){animation-delay:.2s;}
@@ -119,7 +129,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div id="welcome">
     <div class="ico">&#9889;</div>
     <h2>Hola Gaston</h2>
-    <p>Tu asistente personal. Gmail, Calendar y busqueda web en tiempo real.</p>
+    <p>Tu asistente personal. Gmail, Calendar, Sheets, Docs y busqueda web en tiempo real.</p>
     <div class="sug-grid">
       <div class="sug" onclick="go('Mostra mis ultimos emails sin leer y resumime lo mas importante')">
         <div class="si">&#128231;</div><div class="st">Emails sin leer</div><div class="ss">Resumen de lo importante</div>
@@ -127,8 +137,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="sug" onclick="go('Mostra mis reuniones y eventos de los proximos 7 dias')">
         <div class="si">&#128197;</div><div class="st">Proximos eventos</div><div class="ss">Agenda de la semana</div>
       </div>
-      <div class="sug" onclick="go('Cual es la cotizacion del dolar hoy en Argentina?')">
-        <div class="si">&#128269;</div><div class="st">Buscar en la web</div><div class="ss">Info actualizada al momento</div>
+      <div class="sug" onclick="go('Mostra mis Google Sheets')">
+        <div class="si">&#128202;</div><div class="st">Mis Sheets</div><div class="ss">Planillas de Drive</div>
       </div>
       <div class="sug" onclick="go('Que deberia priorizar esta semana para avanzar con Mote y Elevato?')">
         <div class="si">&#127919;</div><div class="st">Prioridades hoy</div><div class="ss">Que hacer esta semana</div>
@@ -169,15 +179,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const BASE_SYSTEM = "Sos el asistente estrategico, operativo y financiero de alto nivel de Gaston Narbeury.\n\nPERFIL: Emprendedor argentino, operador y estratega. Directo, exigente, practico. Alto nivel, no explicar lo basico. Ir al grano, no repetir, no suavizar, entregar soluciones listas.\n\nEMPRESAS:\n1. MOTE GREEN MARKET: retail saludable (frutas, verduras, dietetica). E-commerce + delivery + pick-up. 2 turnos, 16 pedidos/turno, 1 camioneta. Problemas: cuello de botella en armado, retrasos segundo turno, falta sistema de stock.\n2. ELEVATOGROUP: consultora + desarrollo inmobiliario. Detecta oportunidades, analiza normativa, disena proyectos, consigue operadores, estructura contratos, captura valor. Objetivo: pasar de intermediario a equity propio.\n\nPROYECTOS ACTIVOS:\n- PedidosYa/Delivery Hero: dark store, contrato cerrado, replicar modelo\n- Strip Mall NQN: R22, 4200m2, ON CITY (1080m2) + MQ BAZAR (1980m2), inicio obra Junio 2026\n- Zona 135-1 NQN: 80450m2, La Anonima anchor, desarrollo mixto comercial + residencial\n- Funes SF: corredor RP-34S, retail/strip center, analisis y posicionamiento\n- Pilar/Escobar: retail + logistica, zonificacion IMIXC, scouting\n- San Nicolas: lote esquina ~1025m2, reserva/negociacion\n- Rosario Av. San Martin 5263: compra + locacion, Leonardo Tenaglia\n\nCONTACTOS: Leonardo Tenaglia (broker), Nacho/Ignacio (socio), Ezequiel (arquitecto), Alan (dev web), Ludmila (operacion), Lucas (verduleria). Corporativos: PedidosYa, Chango Mas, La Anonima, Toribio Achával.\n\nFORMA DE TRABAJO: Excel intensivo, itera rapido, todo en numeros. Siempre: CAPEX, OPEX, ROI, NPV, IRR, Payback, inflacion vs USD. No sabe programar.\n\nOBJETIVO: Construir un sistema que pase de generar ingresos por operacion a generar riqueza por activos.\n\nINTEGRACIONES: Gmail activo, Calendar activo, busqueda web en tiempo real activa.\n\nResponde siempre: directo al punto, soluciones accionables, numeros concretos, como socio estrategico senior. Espanol argentino.";
+const BASE_SYSTEM = "Sos el asistente estrategico, operativo y financiero de alto nivel de Gaston Narbeury.\n\nPERFIL: Emprendedor argentino, operador y estratega. Directo, exigente, practico. Alto nivel, no explicar lo basico. Ir al grano, no repetir, no suavizar, entregar soluciones listas.\n\nEMPRESAS:\n1. MOTE GREEN MARKET: retail saludable (frutas, verduras, dietetica). E-commerce + delivery + pick-up. 2 turnos, 16 pedidos/turno, 1 camioneta. Problemas: cuello de botella en armado, retrasos segundo turno, falta sistema de stock.\n2. ELEVATOGROUP: consultora + desarrollo inmobiliario. Detecta oportunidades, analiza normativa, disena proyectos, consigue operadores, estructura contratos, captura valor. Objetivo: pasar de intermediario a equity propio.\n\nPROYECTOS ACTIVOS:\n- PedidosYa/Delivery Hero: dark store, contrato cerrado, replicar modelo\n- Strip Mall NQN: R22, 4200m2, ON CITY (1080m2) + MQ BAZAR (1980m2), inicio obra Junio 2026\n- Zona 135-1 NQN: 80450m2, La Anonima anchor, desarrollo mixto comercial + residencial\n- Funes SF: corredor RP-34S, retail/strip center, analisis y posicionamiento\n- Pilar/Escobar: retail + logistica, zonificacion IMIXC, scouting\n- San Nicolas: lote esquina ~1025m2, reserva/negociacion\n- Rosario Av. San Martin 5263: compra + locacion, Leonardo Tenaglia\n\nCONTACTOS: Leonardo Tenaglia (broker), Nacho/Ignacio (socio), Ezequiel (arquitecto), Alan (dev web), Ludmila (operacion), Lucas (verduleria). Corporativos: PedidosYa, Chango Mas, La Anonima, Toribio Achával.\n\nFORMA DE TRABAJO: Excel intensivo, itera rapido, todo en numeros. Siempre: CAPEX, OPEX, ROI, NPV, IRR, Payback, inflacion vs USD. No sabe programar.\n\nOBJETIVO: Construir un sistema que pase de generar ingresos por operacion a generar riqueza por activos.\n\nINTEGRACIONES: Gmail activo, Calendar activo, Google Sheets activo, Google Docs activo, busqueda web en tiempo real activa.\n\nResponde siempre: directo al punto, soluciones accionables, numeros concretos, como socio estrategico senior. Espanol argentino.";
 
 const EXTRACT_PROMPT = "Analiza esta conversacion y extraé SOLO la informacion nueva y relevante que Gaston deberia recordar: decisiones tomadas, contactos nuevos, datos de proyectos, novedades, compromisos, problemas. Lista de puntos cortos. Si no hay nada nuevo relevante, responde exactamente: NADA\n\nConversacion:\n";
 
 const MODES = {
-  general:{ qa:['Ver emails','Ver agenda','Buscar en web','Que priorizo hoy?'] },
+  general:{ qa:['Ver emails','Ver agenda','Mis Sheets','Que priorizo hoy?'] },
   real_estate:{ qa:['Valua esta prop','Analisis de riesgo','Cap rate y TIR','Comp de mercado'] },
   research:{ qa:['Mercado NQN 2026','Retail Argentina','Analisis macro','Competidores'] },
-  docs:{ qa:['Redacta un email','Arma propuesta','Memo ejecutivo','Resumen proyecto'] },
+  docs:{ qa:['Redacta un email','Arma propuesta','Memo ejecutivo','Ver mis Docs'] },
   tasks:{ qa:['Que priorizar?','Checklist proyecto','Seguimiento deals','Plan semana'] },
   strategy:{ qa:['Estrategia expansion','Analisis competitivo','Posicionamiento','Proximos movimientos'] }
 };
@@ -186,7 +196,26 @@ const SEARCH_TRIGGERS = /precio|cotizacion|dolar|euro|mercado|noticia|hoy|actual
 
 let mode='general', msgs=[], busy=false, cloudMemory='', gmailConnected=false;
 
+// ── UTILS ──────────────────────────────────────────────────────────
+
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+
+function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function md(t){
+  return t
+    .replace(/```[\w]*\n([\s\S]*?)```/g,function(_,c){ return '<pre><code>'+esc(c.trim())+'</code></pre>'; })
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,'<a href="$2" target="_blank">$1</a>')
+    .replace(/^[\-\*] (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>')
+    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')
+    .replace(/^(?!<)(.+)/gm,'<p>$1</p>').replace(/<p><\/p>/g,'');
+}
+
+// ── GMAIL ──────────────────────────────────────────────────────────
 
 async function checkGmailStatus(){
   try{
@@ -215,13 +244,6 @@ async function fetchEmails(query){
   }catch(e){ return []; }
 }
 
-async function sendEmail(to,subject,body){
-  try{
-    await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send',to:to,subject:subject,body:body})});
-    return true;
-  }catch(e){ return false; }
-}
-
 async function fetchCalendar(days){
   days=days||7;
   try{
@@ -231,22 +253,84 @@ async function fetchCalendar(days){
   }catch(e){ return []; }
 }
 
-async function createCalendarEvent(title,start,end,description){
-  description=description||'';
-  try{
-    const r=await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',title:title,start:start,end:end,description:description})});
-    const d=await r.json();
-    return d.ok;
-  }catch(e){ return false; }
-}
-
 async function webSearch(query){
   try{
     const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:query})});
-    const d=await r.json();
-    return d;
+    return await r.json();
   }catch(e){ return null; }
 }
+
+// ── SHEETS ─────────────────────────────────────────────────────────
+
+async function fetchSheetsList(){
+  try{
+    const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})});
+    const d=await r.json();
+    return d.sheets||[];
+  }catch(e){ return []; }
+}
+
+async function readSheet(spreadsheetId,range){
+  range=range||'A1:Z100';
+  try{
+    const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',spreadsheetId,range})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+async function writeSheet(spreadsheetId,range,values){
+  try{
+    const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'write',spreadsheetId,range,values})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+async function appendSheet(spreadsheetId,range,values){
+  try{
+    const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'append',spreadsheetId,range,values})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+async function createSheet(title){
+  try{
+    const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',title})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+// ── DOCS ───────────────────────────────────────────────────────────
+
+async function fetchDocsList(){
+  try{
+    const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})});
+    const d=await r.json();
+    return d.docs||[];
+  }catch(e){ return []; }
+}
+
+async function readDoc(documentId){
+  try{
+    const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',documentId})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+async function createDoc(title,content){
+  try{
+    const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',title,content})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+async function insertInDoc(documentId,content){
+  try{
+    const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'insert',documentId,content})});
+    return await r.json();
+  }catch(e){ return {error:e.message}; }
+}
+
+// ── RENDER HELPERS ─────────────────────────────────────────────────
 
 function renderEmails(emails){
   if(!emails.length) return '<p>No hay emails sin leer.</p>';
@@ -263,6 +347,46 @@ function renderEvents(events){
     return '<div class="event-card"><div class="event-title">'+(e.title||'Sin titulo')+'</div><div class="event-time">'+start+'</div>'+(e.location?'<div class="event-desc">'+e.location+'</div>':'')+(e.description?'<div class="event-desc">'+e.description+'</div>':'')+'</div>';
   }).join('');
 }
+
+function renderSheets(sheets){
+  if(!sheets.length) return '<p>No encontre planillas en tu Drive.</p>';
+  return sheets.map(function(s){
+    var date=s.modifiedTime?new Date(s.modifiedTime).toLocaleDateString('es-AR'):'';
+    return '<div class="sheet-card"><div><div class="sheet-name">📊 '+s.name+'</div><div class="sheet-id">'+s.id+'</div></div><div class="sheet-date">'+date+'</div></div>';
+  }).join('');
+}
+
+function renderDocs(docs){
+  if(!docs.length) return '<p>No encontre documentos en tu Drive.</p>';
+  return docs.map(function(d){
+    var date=d.modifiedTime?new Date(d.modifiedTime).toLocaleDateString('es-AR'):'';
+    return '<div class="doc-card"><div class="doc-name">📄 '+d.name+'</div><div class="doc-id">'+d.id+'</div><div class="doc-date">'+date+'</div></div>';
+  }).join('');
+}
+
+// ── DETECCIÓN DE INTENCIÓN ─────────────────────────────────────────
+
+function isEmailRequest(text){
+  var t=text.toLowerCase();
+  return t.indexOf('email')>=0||t.indexOf('correo')>=0||t.indexOf('mail')>=0||t.indexOf('bandeja')>=0||t.indexOf('sin leer')>=0||(t.indexOf('mensaje')>=0&&t.indexOf('whatsapp')<0);
+}
+
+function isCalendarRequest(text){
+  var t=text.toLowerCase();
+  return t.indexOf('agenda')>=0||t.indexOf('reuni')>=0||t.indexOf('evento')>=0||t.indexOf('calendario')>=0||t.indexOf('calendar')>=0||(t.indexOf('semana')>=0&&(t.indexOf('que tengo')>=0||t.indexOf('qué tengo')>=0));
+}
+
+function isSheetsRequest(text){
+  var t=text.toLowerCase();
+  return /sheet|planilla|spreadsheet|excel de drive|hoja de c[aá]lculo|google sheet/.test(t);
+}
+
+function isDocsRequest(text){
+  var t=text.toLowerCase();
+  return /(?:mis |ver |abrir |leer |crear |creame |arm[aá] )?(?:google )?docs?(?:umento)?s?(?:\b)/.test(t)||/agrega(r|me)? al doc|escrib[ií] en el doc|insert[aá] en el doc/.test(t);
+}
+
+// ── MEMORIA ────────────────────────────────────────────────────────
 
 async function loadMemory(){
   try{
@@ -305,6 +429,8 @@ async function autoSaveMemory(){
   }catch(e){}
 }
 
+// ── UI ─────────────────────────────────────────────────────────────
+
 function setMode(m){ mode=m; updateQA(); }
 function updateQA(){
   document.getElementById('quick').innerHTML=MODES[mode].qa.map(function(a){
@@ -327,19 +453,6 @@ function addMsg(role,content,isHtml){
   d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight;
 }
 
-function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function md(t){
-  return t
-    .replace(/```[\w]*\n([\s\S]*?)```/g,function(_,c){ return '<pre><code>'+esc(c.trim())+'</code></pre>'; })
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^[\-\*] (.+)$/gm,'<li>$1</li>')
-    .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>')
-    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')
-    .replace(/^(?!<)(.+)/gm,'<p>$1</p>').replace(/<p><\/p>/g,'');
-}
-
 var typingEl=null;
 function showTyping(){
   showChat();
@@ -352,15 +465,7 @@ function showTyping(){
 }
 function removeTyping(){ if(typingEl){typingEl.remove();typingEl=null;} }
 
-function isEmailRequest(text){
-  var t=text.toLowerCase();
-  return t.indexOf('email')>=0||t.indexOf('correo')>=0||t.indexOf('mail')>=0||t.indexOf('bandeja')>=0||t.indexOf('sin leer')>=0||(t.indexOf('mensaje')>=0&&t.indexOf('whatsapp')<0);
-}
-
-function isCalendarRequest(text){
-  var t=text.toLowerCase();
-  return t.indexOf('agenda')>=0||t.indexOf('reuni')>=0||t.indexOf('evento')>=0||t.indexOf('calendario')>=0||t.indexOf('calendar')>=0||(t.indexOf('semana')>=0&&(t.indexOf('que tengo')>=0||t.indexOf('qué tengo')>=0));
-}
+// ── SEND (núcleo del agente) ───────────────────────────────────────
 
 async function send(){
   var inp=document.getElementById('inp');
@@ -372,6 +477,8 @@ async function send(){
   addMsg('user',text); showTyping();
 
   try{
+
+    // ── EMAILS ────────────────────────────────────────────────────
     if(isEmailRequest(text)&&gmailConnected){
       var emails=await fetchEmails('is:unread');
       removeTyping();
@@ -389,6 +496,8 @@ async function send(){
         addMsg('assistant','No hay emails sin leer en este momento.');
       }
     }
+
+    // ── CALENDAR ──────────────────────────────────────────────────
     else if(isCalendarRequest(text)&&gmailConnected){
       var events=await fetchCalendar(7);
       removeTyping();
@@ -406,7 +515,72 @@ async function send(){
         addMsg('assistant','No tenes eventos en los proximos 7 dias.');
       }
     }
-    else {
+
+    // ── SHEETS ────────────────────────────────────────────────────
+    else if(isSheetsRequest(text)&&gmailConnected){
+      toast('Accediendo a Google Sheets...');
+      var sheets=await fetchSheetsList();
+      removeTyping();
+      addMsg('assistant','<p><strong>Tus Google Sheets:</strong></p>'+renderSheets(sheets),true);
+      if(sheets.length>0){
+        var sheetsText=sheets.map(function(s){ return '- '+s.name+' (ID: '+s.id+')'; }).join('\n');
+        msgs.push({role:'assistant',content:'Planillas disponibles:\n'+sheetsText});
+        showTyping();
+        var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.concat([{role:'user',content:'El usuario pidio: "'+text+'". Estas son sus planillas:\n'+sheetsText+'\n\nIndicale que puede hacer. Si quiere leer una, necesita el ID. Si quiere crear una nueva, solo el titulo.'}]),system:getSystem()})});
+        var d2=await r2.json();
+        removeTyping();
+        var reply2=d2.content&&d2.content[0]?d2.content[0].text:'';
+        if(reply2){ msgs.push({role:'assistant',content:reply2}); addMsg('assistant',reply2); }
+      }
+    }
+
+    // ── DOCS ──────────────────────────────────────────────────────
+    else if(isDocsRequest(text)&&gmailConnected){
+      var isCreate=/crea(r|me)?|hace(r|me)?|generar|arma(r|me)?|nueva?/i.test(text);
+      if(isCreate){
+        removeTyping();
+        // Claude genera el contenido del doc
+        var r1=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs,system:getSystem()+'\n\nMUY IMPORTANTE: cuando generes un documento para crear en Google Docs, responde UNICAMENTE con este formato exacto (sin texto antes ni despues):\nTITULO: <titulo del documento>\nCONTENIDO:\n<contenido completo del documento>'})});
+        var d1=await r1.json();
+        var rawReply=d1.content&&d1.content[0]?d1.content[0].text:'';
+        var titleMatch=rawReply.match(/TITULO:\s*(.+)/i);
+        var contentMatch=rawReply.match(/CONTENIDO:\s*([\s\S]+)/i);
+        if(titleMatch&&contentMatch){
+          toast('Creando documento en Drive...');
+          var newDoc=await createDoc(titleMatch[1].trim(),contentMatch[1].trim());
+          if(newDoc.ok){
+            var docMsg='Documento **'+titleMatch[1].trim()+'** creado en Google Drive.\n\n[Abrir en Google Docs]('+newDoc.url+')';
+            msgs.push({role:'assistant',content:docMsg});
+            addMsg('assistant',docMsg);
+          } else {
+            addMsg('assistant','Error al crear el documento: '+(newDoc.error||'desconocido'));
+          }
+        } else {
+          // Fallback si Claude no siguió el formato
+          msgs.push({role:'assistant',content:rawReply});
+          addMsg('assistant',rawReply);
+        }
+      } else {
+        // Listar docs
+        toast('Accediendo a Google Docs...');
+        var docs=await fetchDocsList();
+        removeTyping();
+        addMsg('assistant','<p><strong>Tus Google Docs:</strong></p>'+renderDocs(docs),true);
+        if(docs.length>0){
+          var docsText=docs.map(function(d){ return '- '+d.name+' (ID: '+d.id+')'; }).join('\n');
+          msgs.push({role:'assistant',content:'Documentos disponibles:\n'+docsText});
+          showTyping();
+          var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.concat([{role:'user',content:'El usuario pidio: "'+text+'". Estos son sus docs:\n'+docsText+'\n\nIndicale que puede hacer.'}]),system:getSystem()})});
+          var d2=await r2.json();
+          removeTyping();
+          var reply2=d2.content&&d2.content[0]?d2.content[0].text:'';
+          if(reply2){ msgs.push({role:'assistant',content:reply2}); addMsg('assistant',reply2); }
+        }
+      }
+    }
+
+    // ── BÚSQUEDA / CHAT GENERAL ───────────────────────────────────
+    else{
       var searchContext='';
       if(SEARCH_TRIGGERS.test(text)){
         toast('Buscando info actualizada...');
@@ -427,14 +601,16 @@ async function send(){
     }
 
     if(msgs.length%6===0) autoSaveMemory();
+
   }catch(err){ removeTyping(); addMsg('assistant','Error: '+err.message); }
 
   busy=false; document.getElementById('sendbtn').disabled=false; inp.focus();
 }
 
+// ── INIT ───────────────────────────────────────────────────────────
+
 window.addEventListener('beforeunload',function(){ if(msgs.length>=4) autoSaveMemory(); });
 document.addEventListener('visibilitychange',function(){ if(document.hidden&&msgs.length>=4) autoSaveMemory(); });
-
 if(window.location.search.indexOf('gmail=connected')>=0){ toast('Gmail y Calendar conectados'); window.history.replaceState({},'','/'); }
 
 updateQA();
