@@ -1,5 +1,4 @@
 import { Redis } from '@upstash/redis';
-
 const redis = Redis.fromEnv();
 
 async function getAccessToken() {
@@ -8,7 +7,6 @@ async function getAccessToken() {
   
   const t = typeof tokens === 'string' ? JSON.parse(tokens) : tokens;
   
-  // Refrescar token si expiró
   if (Date.now() > t.expiry_date) {
     const res = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
@@ -34,13 +32,13 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { action, query, to, subject, body } = req.body;
+  const { action, query, to, subject, body } = req.body || {};
   const token = await getAccessToken();
   
   if (!token) return res.status(401).json({ error: 'Gmail no conectado. Andá a /api/auth?action=login' });
 
-  // LEER EMAILS
   if (action === 'read') {
     const listRes = await fetch(
       `https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=10&q=${encodeURIComponent(query || 'is:unread')}`,
@@ -69,7 +67,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ emails });
   }
 
-  // MANDAR EMAIL
   if (action === 'send') {
     const email = [`To: ${to}`, `Subject: ${subject}`, 'Content-Type: text/plain; charset=utf-8', '', body].join('\n');
     const encoded = Buffer.from(email).toString('base64').replace(/\+/g, '-').replace(/\//g, '_');
