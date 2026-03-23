@@ -1,3 +1,7 @@
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
+
 export default async function handler(req, res) {
   const { code, action } = req.query;
   
@@ -5,13 +9,11 @@ export default async function handler(req, res) {
   const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
   const REDIRECT_URI = 'https://gaston-ia.vercel.app/api/auth';
 
-  // Iniciar autenticación
   if (action === 'login') {
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/gmail.send&access_type=offline&prompt=consent`;
     return res.redirect(authUrl);
   }
 
-  // Callback con el código
   if (code) {
     try {
       const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -26,14 +28,8 @@ export default async function handler(req, res) {
         })
       });
       const tokens = await tokenRes.json();
-      
-      // Guardar tokens en Upstash via chat.js
-      await fetch(`https://gaston-ia.vercel.app/api/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'save_memory', memory: JSON.stringify(tokens) })
-      });
-
+      tokens.expiry_date = Date.now() + (tokens.expires_in * 1000);
+      await redis.set('gmail_tokens', JSON.stringify(tokens));
       return res.redirect('/?gmail=connected');
     } catch (err) {
       return res.status(500).json({ error: err.message });
