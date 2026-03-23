@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const REDIRECT_URI = 'https://gaston-ia.vercel.app/api/auth';
 
   if (action === 'login') {
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/gmail.send&access_type=offline&prompt=consent`;
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/gmail.send+https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
     return res.redirect(authUrl);
   }
 
