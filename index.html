@@ -42,12 +42,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bubble table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0;}
 .bubble th{background:rgba(169,146,109,0.15);padding:5px 8px;color:var(--gold);text-align:left;}
 .bubble td{padding:4px 8px;border-top:1px solid rgba(255,255,255,0.06);}
-.email-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer;}
-.email-card:hover{border-color:var(--gold);}
+.email-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:6px 0;}
 .email-from{font-size:12px;color:var(--gold);font-weight:500;margin-bottom:3px;}
 .email-subject{font-size:13px;color:var(--white);margin-bottom:4px;}
 .email-snippet{font-size:12px;color:var(--muted);line-height:1.4;}
 .email-date{font-size:11px;color:var(--muted);margin-top:4px;}
+.event-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:6px 0;border-left:3px solid var(--gold);}
+.event-title{font-size:13px;color:var(--white);font-weight:500;margin-bottom:3px;}
+.event-time{font-size:12px;color:var(--gold);margin-bottom:3px;}
+.event-desc{font-size:12px;color:var(--muted);line-height:1.4;}
 .typing{display:flex;align-items:center;gap:4px;padding:12px 14px;}
 .typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite;}
 .typing span:nth-child(2){animation-delay:.2s;}
@@ -118,13 +121,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div id="welcome">
     <div class="ico">⚡</div>
     <h2>Hola Gastón</h2>
-    <p>Tu asistente personal. Recuerda todo y maneja tu Gmail.</p>
+    <p>Tu asistente personal. Recuerda todo, maneja tu Gmail y Calendar.</p>
     <div class="sug-grid">
-      <div class="sug" onclick="go('Mostrá mis últimos emails sin leer')">
+      <div class="sug" onclick="go('Mostrá mis últimos emails sin leer y resumime lo más importante')">
         <div class="si">📧</div><div class="st">Emails sin leer</div><div class="ss">Resumen de lo importante</div>
       </div>
-      <div class="sug" onclick="go('¿Qué proyectos tenemos activos y cuál es el estado de cada uno?')">
-        <div class="si">📊</div><div class="st">Estado proyectos</div><div class="ss">Resumen de todo lo activo</div>
+      <div class="sug" onclick="go('Mostrá mis reuniones y eventos de los próximos 7 días')">
+        <div class="si">📅</div><div class="st">Próximos eventos</div><div class="ss">Agenda de la semana</div>
       </div>
       <div class="sug" onclick="go('Redactá un email para presentar Elevato Group a un inversor institucional')">
         <div class="si">✉️</div><div class="st">Email inversor</div><div class="ss">Pitch profesional</div>
@@ -199,14 +202,16 @@ FORMA DE TRABAJO: Excel intensivo, itera rápido, todo en números. Siempre: CAP
 
 OBJETIVO: "Construir un sistema que pase de generar ingresos por operación a generar riqueza por activos."
 
-GMAIL: Tenés acceso al Gmail de Gastón. Cuando te pida emails, usás la función fetchEmails(). Cuando te pida mandar un email, usás sendEmail(). Siempre confirmás antes de mandar.
+INTEGRACIONES DISPONIBLES:
+- GMAIL: Cuando pida emails usás fetchEmails(query). Cuando pida mandar un email usás sendEmail(). Siempre confirmás antes de mandar.
+- CALENDAR: Cuando pida ver agenda/reuniones/eventos usás fetchCalendar(days). Cuando pida crear un evento usás createCalendarEvent(). Confirmás antes de crear.
 
 Respondé siempre: directo al punto, soluciones accionables, números concretos, como socio estratégico senior. Español argentino.`;
 
 const EXTRACT_PROMPT = `Analizá esta conversación y extraé SOLO la información nueva y relevante que Gastón debería recordar: decisiones tomadas, contactos nuevos, datos de proyectos, novedades, compromisos, problemas. Lista de puntos cortos. Si no hay nada nuevo relevante, respondé exactamente: NADA\n\nConversación:\n`;
 
 const MODES = {
-  general:{ qa:['📧 Ver emails','¿Qué priorizo hoy?','Resumí mi semana','Ayudame a escribir'] },
+  general:{ qa:['📧 Ver emails','📅 Ver agenda','¿Qué priorizo hoy?','Resumí mi semana'] },
   real_estate:{ qa:['Valuá esta prop','Análisis de riesgo','Cap rate y TIR','Comp de mercado'] },
   research:{ qa:['Mercado NQN 2026','Retail Argentina','Análisis macro','Competidores'] },
   docs:{ qa:['Redactá un email','Armá propuesta','Memo ejecutivo','Resumen proyecto'] },
@@ -255,6 +260,23 @@ async function sendEmail(to, subject, body){
   }catch(e){ return false; }
 }
 
+// CALENDAR
+async function fetchCalendar(days=7){
+  try{
+    const r = await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',days})});
+    const d = await r.json();
+    return d.events || [];
+  }catch(e){ return []; }
+}
+
+async function createCalendarEvent(title, start, end, description=''){
+  try{
+    const r = await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'create',title,start,end,description})});
+    const d = await r.json();
+    return d.ok;
+  }catch(e){ return false; }
+}
+
 function renderEmails(emails){
   if(!emails.length) return '<p>No hay emails sin leer.</p>';
   return emails.map(e=>`
@@ -265,6 +287,21 @@ function renderEmails(emails){
       <div class="email-date">${e.date||''}</div>
     </div>
   `).join('');
+}
+
+function renderEvents(events){
+  if(!events.length) return '<p>No hay eventos próximos.</p>';
+  return events.map(e=>{
+    const start = e.start ? new Date(e.start).toLocaleString('es-AR',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+    return `
+      <div class="event-card">
+        <div class="event-title">${e.title||'Sin título'}</div>
+        <div class="event-time">📅 ${start}</div>
+        ${e.location?`<div class="event-desc">📍 ${e.location}</div>`:''}
+        ${e.description?`<div class="event-desc">${e.description}</div>`:''}
+      </div>
+    `;
+  }).join('');
 }
 
 // MEMORIA
@@ -344,10 +381,14 @@ let typingEl=null;
 function showTyping(){ showChat(); const c=document.getElementById('messages'); const d=document.createElement('div'); d.className='msg a'; d.id='typing'; const av=document.createElement('div'); av.className='avatar a'; av.textContent='⚡'; const b=document.createElement('div'); b.className='bubble'; b.innerHTML='<div class="typing"><span></span><span></span><span></span></div>'; d.appendChild(av); d.appendChild(b); c.appendChild(d); c.scrollTop=c.scrollHeight; typingEl=d; }
 function removeTyping(){ if(typingEl){typingEl.remove();typingEl=null;} }
 
-// Detectar si pide emails
 function isEmailRequest(text){
   const t=text.toLowerCase();
-  return t.includes('email') || t.includes('correo') || t.includes('mail') || t.includes('bandeja') || t.includes('sin leer') || t.includes('mensaje');
+  return t.includes('email') || t.includes('correo') || t.includes('mail') || t.includes('bandeja') || t.includes('sin leer') || (t.includes('mensaje') && !t.includes('whatsapp'));
+}
+
+function isCalendarRequest(text){
+  const t=text.toLowerCase();
+  return t.includes('agenda') || t.includes('reunión') || t.includes('reunion') || t.includes('evento') || t.includes('calendario') || t.includes('calendar') || t.includes('turno') && t.includes('hoy') || t.includes('semana') && (t.includes('qué tengo') || t.includes('que tengo'));
 }
 
 async function send(){
@@ -360,18 +401,15 @@ async function send(){
   addMsg('user',text); showTyping();
 
   try{
-    // Si pide emails, traerlos primero
+    // EMAILS
     if(isEmailRequest(text) && gmailConnected){
       const emails = await fetchEmails();
       removeTyping();
       if(emails.length>0){
         const emailsHtml = '<p>📧 <strong>Tus últimos emails:</strong></p>' + renderEmails(emails);
         addMsg('assistant', emailsHtml, true);
-        
-        // Mandar al agente para que analice
         const emailsText = emails.map(e=>`De: ${e.from}\nAsunto: ${e.subject}\nResumen: ${e.snippet}`).join('\n\n');
         msgs.push({role:'assistant',content:'Te muestro los emails. Analizándolos...'});
-        
         showTyping();
         const r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...msgs,{role:'user',content:`Analizá estos emails y decime qué es lo más importante y urgente:\n\n${emailsText}`}],system:getSystem()})});
         const d2=await r2.json();
@@ -379,10 +417,30 @@ async function send(){
         const reply2=d2.content?.[0]?.text||'';
         if(reply2){ msgs.push({role:'assistant',content:reply2}); addMsg('assistant',reply2); }
       } else {
-        addMsg('assistant','No hay emails sin leer o Gmail no está conectado correctamente.');
+        addMsg('assistant','No hay emails sin leer en este momento.');
       }
-    } else {
-      // Chat normal
+    }
+    // CALENDAR
+    else if(isCalendarRequest(text) && gmailConnected){
+      const events = await fetchCalendar(7);
+      removeTyping();
+      if(events.length>0){
+        const eventsHtml = '<p>📅 <strong>Tus próximos eventos:</strong></p>' + renderEvents(events);
+        addMsg('assistant', eventsHtml, true);
+        const eventsText = events.map(e=>`Título: ${e.title}\nFecha: ${e.start}\n${e.description||''}`).join('\n\n');
+        msgs.push({role:'assistant',content:'Te muestro la agenda.'});
+        showTyping();
+        const r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...msgs,{role:'user',content:`Analizá estos eventos y dame un resumen ejecutivo de la semana:\n\n${eventsText}`}],system:getSystem()})});
+        const d2=await r2.json();
+        removeTyping();
+        const reply2=d2.content?.[0]?.text||'';
+        if(reply2){ msgs.push({role:'assistant',content:reply2}); addMsg('assistant',reply2); }
+      } else {
+        addMsg('assistant','No tenés eventos en los próximos 7 días.');
+      }
+    }
+    // CHAT NORMAL
+    else {
       const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs.slice(-14),system:getSystem()})});
       const d=await r.json();
       removeTyping();
@@ -401,8 +459,7 @@ async function send(){
 window.addEventListener('beforeunload',()=>{ if(msgs.length>=4) autoSaveMemory(); });
 document.addEventListener('visibilitychange',()=>{ if(document.hidden&&msgs.length>=4) autoSaveMemory(); });
 
-// Check if came back from Gmail auth
-if(window.location.search.includes('gmail=connected')){ toast('📧 Gmail conectado exitosamente'); window.history.replaceState({},'','/'); }
+if(window.location.search.includes('gmail=connected')){ toast('📧 Gmail y Calendar conectados'); window.history.replaceState({},'','/'); }
 
 updateQA();
 loadMemory();
