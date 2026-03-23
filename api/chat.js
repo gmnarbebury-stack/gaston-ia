@@ -9,18 +9,29 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { messages, system, action, memory } = req.body;
+  const { messages, system, action, memory, key, value } = req.body;
 
+  // MEMORIA
   if (action === 'save_memory') {
     await redis.set('gaston_memory', memory);
     return res.status(200).json({ ok: true });
   }
-
   if (action === 'get_memory') {
     const mem = await redis.get('gaston_memory');
     return res.status(200).json({ memory: mem || '' });
   }
 
+  // STORAGE GENÉRICO (para tokens Gmail, etc)
+  if (action === 'set') {
+    await redis.set(key, value);
+    return res.status(200).json({ ok: true });
+  }
+  if (action === 'get') {
+    const val = await redis.get(key);
+    return res.status(200).json({ value: val || '' });
+  }
+
+  // CHAT
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
