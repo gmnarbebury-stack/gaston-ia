@@ -58,11 +58,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sheet-date{font-size:11px;color:var(--muted);}
 .sheet-id{font-size:10px;color:var(--muted);font-family:monospace;margin-top:2px;}
 .doc-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:4px 0;border-left:3px solid #5B8CDB;cursor:pointer;}
-.doc-card:active{border-color:#5B8CDB;}
 .doc-name{font-size:13px;color:var(--white);font-weight:500;}
 .doc-date{font-size:11px;color:var(--muted);}
 .doc-id{font-size:10px;color:var(--muted);font-family:monospace;margin-top:2px;}
 .action-bar{background:rgba(169,146,109,0.08);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:12px;color:var(--gold);display:flex;align-items:center;gap:6px;}
+.wa-card{background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);border-radius:10px;padding:10px 14px;margin:6px 0;display:flex;align-items:center;gap:10px;}
+.wa-icon{font-size:20px;}
+.wa-info{flex:1;}
+.wa-to{font-size:12px;color:#25D366;font-weight:500;}
+.wa-msg{font-size:13px;color:var(--white);margin-top:2px;}
 .typing{display:flex;align-items:center;gap:4px;padding:12px 14px;}
 .typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite;}
 .typing span:nth-child(2){animation-delay:.2s;}
@@ -131,7 +135,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div id="welcome">
     <div class="ico">&#9889;</div>
     <h2>Hola Gaston</h2>
-    <p>Tu asistente personal. Gmail, Calendar, Sheets, Docs y busqueda web en tiempo real.</p>
+    <p>Tu asistente personal. Gmail, Calendar, Sheets, Docs, WhatsApp y busqueda web.</p>
     <div class="sug-grid">
       <div class="sug" onclick="go('Mostra mis ultimos emails sin leer y resumime lo mas importante')">
         <div class="si">&#128231;</div><div class="st">Emails sin leer</div><div class="ss">Resumen de lo importante</div>
@@ -180,33 +184,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// SISTEMA DE TOOLS — Claude embebe comandos [[TOOL:...]] en
-// su respuesta. El frontend los intercepta y ejecuta.
-// ═══════════════════════════════════════════════════════════
-
 const TOOL_SYSTEM = `
 HERRAMIENTAS DISPONIBLES — embedí comandos en tu respuesta con este formato exacto:
 [[TOOL:accion:parametros]]
 
 SHEETS:
-[[TOOL:read_sheet:SPREADSHEET_ID:A1:Z500]] — lee rango de una planilla
+[[TOOL:read_sheet:SPREADSHEET_ID:A1:Z500]] — lee rango
 [[TOOL:write_sheet:SPREADSHEET_ID:A1:val1|val2;val3|val4]] — escribe (filas con ; columnas con |)
-[[TOOL:append_sheet:SPREADSHEET_ID:Hoja1:val1|val2;val3|val4]] — agrega filas al final
+[[TOOL:append_sheet:SPREADSHEET_ID:Hoja1:val1|val2;val3|val4]] — agrega filas
 [[TOOL:create_sheet:TITULO]] — crea planilla nueva
 
 DOCS:
-[[TOOL:read_doc:DOCUMENT_ID]] — lee contenido de un doc
-[[TOOL:create_doc:TITULO:::CONTENIDO COMPLETO DEL DOCUMENTO]] — crea doc nuevo
-[[TOOL:insert_doc:DOCUMENT_ID:::TEXTO A AGREGAR AL FINAL]] — inserta texto en doc existente
+[[TOOL:read_doc:DOCUMENT_ID]] — lee contenido
+[[TOOL:create_doc:TITULO:::CONTENIDO COMPLETO]] — crea doc nuevo
+[[TOOL:insert_doc:DOCUMENT_ID:::TEXTO A AGREGAR]] — inserta al final
+
+WHATSAPP:
+[[TOOL:send_wa:NUMERO:MENSAJE]] — envia WhatsApp (numero con codigo pais ej +5491112345678, o "default" para el numero configurado)
 
 REGLAS:
-- Si el usuario pide leer/analizar/modificar un archivo y tenés el ID, usá el TOOL directamente.
-- Si no tenés el ID, listá primero o pedíselo.
+- Si el usuario pide enviar un WhatsApp, usá [[TOOL:send_wa:default:MENSAJE]] salvo que especifique otro numero.
+- Si el usuario pide leer/analizar/modificar un archivo y tenés el ID, usá el TOOL directo.
 - Los TOOL se ejecutan antes de que el usuario vea la respuesta.
-- Podés usar multiples TOOL en una respuesta.
-- NO muestres los tags [[TOOL:...]] al usuario, solo el análisis/resultado.
-- Después de un read_sheet o read_doc, analizá los datos y dá conclusiones accionables.
+- NO muestres los tags [[TOOL:...]] al usuario.
+- Después de ejecutar tools, analizá y respondé con conclusiones accionables.
 `;
 
 const BASE_SYSTEM = `Sos el asistente estrategico, operativo y financiero de alto nivel de Gaston Narbeury.
@@ -226,11 +227,11 @@ CONTACTOS: Leonardo Tenaglia (broker), Nacho (socio), Ezequiel (arquitecto), Ala
 
 FORMA DE TRABAJO: Excel intensivo, numeros, CAPEX/OPEX/ROI/NPV/IRR/Payback. No sabe programar.
 
-INTEGRACIONES ACTIVAS: Gmail, Calendar, Google Sheets (leer/escribir/crear), Google Docs (leer/crear/insertar), busqueda web.
+INTEGRACIONES ACTIVAS: Gmail, Calendar, Google Sheets, Google Docs, WhatsApp, busqueda web.
 
 Responde siempre en español argentino: directo, sin vueltas, soluciones accionables, numeros concretos.`;
 
-const EXTRACT_PROMPT = "Extraé SOLO info nueva relevante de esta conversacion: decisiones, contactos, datos de proyectos, compromisos. Lista corta. Si no hay nada nuevo responde exactamente: NADA\n\nConversacion:\n";
+const EXTRACT_PROMPT = "Extraé SOLO info nueva relevante: decisiones, contactos, datos de proyectos, compromisos. Lista corta. Si no hay nada nuevo responde exactamente: NADA\n\nConversacion:\n";
 
 const MODES = {
   general:{ qa:['Ver emails','Ver agenda','Mis Sheets','Prioridades hoy'] },
@@ -263,7 +264,7 @@ function md(t){
     .replace(/^(?!<)(.+)/gm,'<p>$1</p>').replace(/<p><\/p>/g,'');
 }
 
-// ── GOOGLE AUTH ────────────────────────────────────────────
+// ── AUTH ───────────────────────────────────────────────────
 
 async function checkGmailStatus(){
   try{
@@ -277,35 +278,21 @@ async function checkGmailStatus(){
     }
   }catch(e){}
 }
-
 function toggleGmail(){
-  if(!gmailConnected){ window.location.href='/api/auth?action=login'; }
-  else{ go('Mostra mis ultimos emails sin leer y resumime lo mas importante'); }
+  if(!gmailConnected) window.location.href='/api/auth?action=login';
+  else go('Mostra mis ultimos emails sin leer y resumime lo mas importante');
 }
 
 // ── API CALLS ──────────────────────────────────────────────
 
-async function fetchEmails(query){
-  try{ const r=await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',query:query||'is:unread'})}); const d=await r.json(); return d.emails||[]; }catch(e){ return []; }
-}
-async function fetchCalendar(days){
-  try{ const r=await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',days:days||7})}); const d=await r.json(); return d.events||[]; }catch(e){ return []; }
-}
-async function webSearch(query){
-  try{ const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})}); return await r.json(); }catch(e){ return null; }
-}
-async function fetchSheetsList(){
-  try{ const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})}); const d=await r.json(); return d.sheets||[]; }catch(e){ return []; }
-}
-async function fetchDocsList(){
-  try{ const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})}); const d=await r.json(); return d.docs||[]; }catch(e){ return []; }
-}
-async function callSheets(body){
-  try{ const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return await r.json(); }catch(e){ return {error:e.message}; }
-}
-async function callDocs(body){
-  try{ const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return await r.json(); }catch(e){ return {error:e.message}; }
-}
+async function fetchEmails(q){ try{ const r=await fetch('/api/gmail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'read',query:q||'is:unread'})}); const d=await r.json(); return d.emails||[]; }catch(e){ return []; } }
+async function fetchCalendar(days){ try{ const r=await fetch('/api/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',days:days||7})}); const d=await r.json(); return d.events||[]; }catch(e){ return []; } }
+async function webSearch(q){ try{ const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})}); return await r.json(); }catch(e){ return null; } }
+async function fetchSheetsList(){ try{ const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})}); const d=await r.json(); return d.sheets||[]; }catch(e){ return []; } }
+async function fetchDocsList(){ try{ const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})}); const d=await r.json(); return d.docs||[]; }catch(e){ return []; } }
+async function callSheets(body){ try{ const r=await fetch('/api/sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return await r.json(); }catch(e){ return {error:e.message}; } }
+async function callDocs(body){ try{ const r=await fetch('/api/docs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return await r.json(); }catch(e){ return {error:e.message}; } }
+async function callWhatsApp(body){ try{ const r=await fetch('/api/whatsapp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return await r.json(); }catch(e){ return {error:e.message}; } }
 
 // ── EJECUTOR DE TOOLS ──────────────────────────────────────
 
@@ -320,24 +307,20 @@ async function executeTools(text){
     const rest=raw.substring(firstColon+1);
     try{
       if(action==='read_sheet'){
-        const parts=rest.split(':');
-        const id=parts[0];
-        const range=parts.slice(1).join(':')||'A1:Z500';
+        const parts=rest.split(':'); const id=parts[0]; const range=parts.slice(1).join(':')||'A1:Z500';
         toast('Leyendo planilla...');
         const d=await callSheets({action:'read',spreadsheetId:id,range});
-        results.push(d.values ? {tool:'read_sheet',id,values:d.values,rows:d.values.length} : {tool:'read_sheet',id,error:d.error||'vacia'});
+        results.push(d.values?{tool:'read_sheet',id,values:d.values,rows:d.values.length}:{tool:'read_sheet',id,error:d.error||'vacia'});
       }
       else if(action==='write_sheet'){
-        const parts=rest.split(':');
-        const id=parts[0], range=parts[1];
+        const parts=rest.split(':'); const id=parts[0],range=parts[1];
         const vals=parts.slice(2).join(':').split(';').map(r=>r.split('|'));
-        toast('Escribiendo...');
+        toast('Escribiendo en planilla...');
         const d=await callSheets({action:'write',spreadsheetId:id,range,values:vals});
         results.push({tool:'write_sheet',id,ok:d.ok,cells:d.updatedCells});
       }
       else if(action==='append_sheet'){
-        const parts=rest.split(':');
-        const id=parts[0], sheet=parts[1]||'Hoja1';
+        const parts=rest.split(':'); const id=parts[0],sheet=parts[1]||'Hoja1';
         const vals=parts.slice(2).join(':').split(';').map(r=>r.split('|'));
         toast('Agregando filas...');
         const d=await callSheets({action:'append',spreadsheetId:id,range:sheet+'!A1',values:vals});
@@ -351,11 +334,10 @@ async function executeTools(text){
       else if(action==='read_doc'){
         toast('Leyendo documento...');
         const d=await callDocs({action:'read',documentId:rest.trim()});
-        results.push(d.text ? {tool:'read_doc',id:rest.trim(),title:d.title,text:d.text.substring(0,5000),length:d.text.length} : {tool:'read_doc',id:rest.trim(),error:d.error||'vacio'});
+        results.push(d.text?{tool:'read_doc',id:rest.trim(),title:d.title,text:d.text.substring(0,5000),length:d.text.length}:{tool:'read_doc',id:rest.trim(),error:d.error||'vacio'});
       }
       else if(action==='create_doc'){
-        const sep=':::';
-        const idx=rest.indexOf(sep);
+        const sep=':::'; const idx=rest.indexOf(sep);
         const title=idx>=0?rest.substring(0,idx):rest;
         const content=idx>=0?rest.substring(idx+3):'';
         toast('Creando documento...');
@@ -363,13 +345,21 @@ async function executeTools(text){
         results.push({tool:'create_doc',ok:d.ok,url:d.url,id:d.documentId,title});
       }
       else if(action==='insert_doc'){
-        const sep=':::';
-        const idx=rest.indexOf(sep);
+        const sep=':::'; const idx=rest.indexOf(sep);
         const docId=idx>=0?rest.substring(0,idx):rest;
         const content=idx>=0?rest.substring(idx+3):'';
         toast('Insertando en documento...');
         const d=await callDocs({action:'insert',documentId:docId,content});
         results.push({tool:'insert_doc',id:docId,ok:d.ok});
+      }
+      else if(action==='send_wa'){
+        const firstC=rest.indexOf(':');
+        const to=rest.substring(0,firstC);
+        const message=rest.substring(firstC+1);
+        const recipient=to==='default'?undefined:to;
+        toast('Enviando WhatsApp...');
+        const d=await callWhatsApp({action:'send',to:recipient,message});
+        results.push({tool:'send_wa',ok:d.ok,to:recipient||'default',message,error:d.error});
       }
     }catch(err){ results.push({tool:action,error:err.message}); }
   }
@@ -386,6 +376,7 @@ function toolsToContext(results){
     else if(r.tool==='read_doc') ctx+=r.error?`Doc ${r.id}: ERROR ${r.error}\n`:`Doc "${r.title}" (${r.length} chars):\n${r.text}\n`;
     else if(r.tool==='create_doc') ctx+=r.ok?`Doc "${r.title}" creado: ${r.url}\n`:`Error creando doc\n`;
     else if(r.tool==='insert_doc') ctx+=`${r.ok?'OK':'ERROR'} insert_doc ${r.id}\n`;
+    else if(r.tool==='send_wa') ctx+=r.ok?`WhatsApp enviado a ${r.to}\n`:`Error WhatsApp: ${r.error}\n`;
   }
   return ctx;
 }
@@ -399,6 +390,10 @@ function toolsToHTML(results){
       const preview=r.values.slice(0,6);
       html+=`<div style="overflow-x:auto;margin:6px 0"><table><thead><tr>${(preview[0]||[]).map(h=>'<th>'+esc(String(h||''))+'</th>').join('')}</tr></thead><tbody>${preview.slice(1).map(row=>'<tr>'+row.map(c=>'<td>'+esc(String(c||''))+'</td>').join('')+'</tr>').join('')}</tbody></table></div>`;
       if(r.rows>6) html+=`<p style="font-size:11px;color:var(--muted)">${r.rows} filas totales</p>`;
+    }
+    if(r.tool==='send_wa'){
+      if(r.ok) html+=`<div class="wa-card"><div class="wa-icon">💬</div><div class="wa-info"><div class="wa-to">WhatsApp enviado ✓</div><div class="wa-msg">${esc(r.message||'')}</div></div></div>`;
+      else html+=`<div class="action-bar">✗ Error WhatsApp: ${r.error||'desconocido'}</div>`;
     }
   }
   return html;
@@ -434,10 +429,11 @@ function renderDocs(docs){
 
 // ── DETECCIÓN ──────────────────────────────────────────────
 
-function isEmailReq(t){ t=t.toLowerCase(); return /email|correo|mail|bandeja|sin leer/.test(t)||(t.includes('mensaje')&&!t.includes('whatsapp')); }
+function isEmailReq(t){ t=t.toLowerCase(); return /email|correo|mail|bandeja|sin leer/.test(t)||(t.includes('mensaje')&&!t.includes('whatsapp')&&!t.includes('wpp')&&!t.includes('whats')); }
 function isCalendarReq(t){ t=t.toLowerCase(); return /agenda|reuni|evento|calendario|calendar/.test(t)||(t.includes('semana')&&t.includes('tengo')); }
 function isSheetsReq(t){ return /sheet|planilla|spreadsheet|hoja de c[aá]lculo/i.test(t); }
 function isDocsReq(t){ return /\b(mis |ver |crear |creame |arm[aá] )?google ?docs?\b|\bdocumentos de drive\b|\bcrear? (un )?doc/i.test(t); }
+function isWAReq(t){ return /whatsapp|wpp|whats|mandale|mandá|manda(le)?|envia(le)?|avisale|notifica/i.test(t); }
 
 // ── MEMORIA ────────────────────────────────────────────────
 
@@ -491,7 +487,7 @@ function showTyping(){
 }
 function removeTyping(){ if(typingEl){typingEl.remove();typingEl=null;} }
 
-// ── HELPER: llamar Claude y ejecutar tools ──────────────────
+// ── CLAUDE + TOOLS ─────────────────────────────────────────
 
 async function claudeWithTools(messages, extraContext){
   const sys=getSystem()+(extraContext||'');
@@ -501,15 +497,13 @@ async function claudeWithTools(messages, extraContext){
   const toolResults=await executeTools(rawReply);
   const toolCtx=toolsToContext(toolResults);
   const toolHTML=toolsToHTML(toolResults);
-
   if(toolResults.length>0&&toolCtx){
-    // Claude ejecutó tools, pedirle el análisis final con los datos
-    const r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...messages,{role:'assistant',content:rawReply},{role:'user',content:'Herramientas ejecutadas. Datos obtenidos:'+toolCtx+'\n\nDame el análisis completo y accionable.'}],system:sys})});
+    const r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[...messages,{role:'assistant',content:rawReply},{role:'user',content:'Herramientas ejecutadas. Resultados:'+toolCtx+'\n\nDame el análisis final.'}],system:sys})});
     const d2=await r2.json();
     const finalReply=d2.content&&d2.content[0]?d2.content[0].text:rawReply;
-    return {reply:finalReply, toolHTML, rawReply};
+    return {reply:finalReply,toolHTML,rawReply};
   }
-  return {reply:rawReply.replace(/\[\[TOOL:[^\]]*\]\]/g,'').trim(), toolHTML:'', rawReply};
+  return {reply:rawReply.replace(/\[\[TOOL:[^\]]*\]\]/g,'').trim(),toolHTML:'',rawReply};
 }
 
 // ── SEND ───────────────────────────────────────────────────
@@ -562,10 +556,10 @@ async function send(){
       removeTyping();
       addMsg('assistant','<p><strong>Tus Google Sheets</strong> — tocá una para leerla:</p>'+renderSheets(sheets),true);
       if(sheets.length){
-        const sheetsCtx='Planillas disponibles:\n'+sheets.map(s=>'- '+s.name+' (ID: '+s.id+')').join('\n');
+        const sheetsCtx='Planillas:\n'+sheets.map(s=>'- '+s.name+' (ID: '+s.id+')').join('\n');
         msgs.push({role:'assistant',content:sheetsCtx});
         showTyping();
-        const {reply,toolHTML}=await claudeWithTools(msgs.concat([{role:'user',content:'El usuario pidio: "'+text+'". Planillas: '+sheetsCtx+'\n\nSi pidio leer alguna, usá [[TOOL:read_sheet:ID:A1:Z500]]. Si no especificó cual, preguntale.'}]));
+        const {reply,toolHTML}=await claudeWithTools(msgs.concat([{role:'user',content:'El usuario pidio: "'+text+'". '+sheetsCtx+'\n\nSi pidio leer alguna usá [[TOOL:read_sheet:ID:A1:Z500]].'}]));
         removeTyping();
         if(toolHTML) addMsg('assistant',toolHTML,true);
         if(reply){ msgs.push({role:'assistant',content:reply}); addMsg('assistant',reply); }
@@ -576,9 +570,8 @@ async function send(){
     else if(isDocsReq(text)&&gmailConnected){
       const isCreate=/crea(r|me)?|hace(r|me)?|generar|arma(r|me)?|nueva?/i.test(text);
       if(isCreate){
-        removeTyping();
-        showTyping();
-        const {reply,toolHTML}=await claudeWithTools(msgs, '\n\nPara crear el doc usá [[TOOL:create_doc:TITULO:::CONTENIDO]]. Generá el contenido completo.');
+        removeTyping(); showTyping();
+        const {reply,toolHTML}=await claudeWithTools(msgs,'\n\nPara crear el doc usá [[TOOL:create_doc:TITULO:::CONTENIDO]]. Generá el contenido completo.');
         removeTyping();
         if(toolHTML) addMsg('assistant',toolHTML,true);
         if(reply){ msgs.push({role:'assistant',content:reply}); addMsg('assistant',reply); }
@@ -588,15 +581,24 @@ async function send(){
         removeTyping();
         addMsg('assistant','<p><strong>Tus Google Docs</strong> — tocá uno para leerlo:</p>'+renderDocs(docs),true);
         if(docs.length){
-          const docsCtx='Documentos:\n'+docs.map(d=>'- '+d.name+' (ID: '+d.id+')').join('\n');
+          const docsCtx='Docs:\n'+docs.map(d=>'- '+d.name+' (ID: '+d.id+')').join('\n');
           msgs.push({role:'assistant',content:docsCtx});
           showTyping();
-          const {reply,toolHTML}=await claudeWithTools(msgs.concat([{role:'user',content:'El usuario pidio: "'+text+'". Docs: '+docsCtx+'\n\nSi pidio leer alguno, usá [[TOOL:read_doc:ID]].'}]));
+          const {reply,toolHTML}=await claudeWithTools(msgs.concat([{role:'user',content:'El usuario pidio: "'+text+'". '+docsCtx+'\n\nSi pidio leer alguno usá [[TOOL:read_doc:ID]].'}]));
           removeTyping();
           if(toolHTML) addMsg('assistant',toolHTML,true);
           if(reply){ msgs.push({role:'assistant',content:reply}); addMsg('assistant',reply); }
         }
       }
+    }
+
+    // WHATSAPP
+    else if(isWAReq(text)){
+      removeTyping(); showTyping();
+      const {reply,toolHTML}=await claudeWithTools(msgs,'\n\nSi el usuario pide mandar un WhatsApp usá [[TOOL:send_wa:default:MENSAJE]]. Generá el mensaje apropiado segun el contexto.');
+      removeTyping();
+      if(toolHTML) addMsg('assistant',toolHTML,true);
+      if(reply){ msgs.push({role:'assistant',content:reply}); addMsg('assistant',reply); }
     }
 
     // GENERAL + BÚSQUEDA
